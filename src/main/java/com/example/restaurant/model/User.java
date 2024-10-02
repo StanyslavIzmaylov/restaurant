@@ -1,40 +1,36 @@
 package com.example.restaurant.model;
 
-import java.util.Set;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-public class User {
+import java.util.Set;
+@Entity
+@Table(name = "users")
+public class User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @NotBlank
+    @Size(min = 2, max = 128)
+    @Column(name = "name", nullable = false)
     private String name;
     private String password;
     private String email;
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_role")})
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> role;
 
     public User(){
-
     }
 
-    public User(Integer id, String name, String password, String email, Set<Role> role) {
-        this.id = id;
-        this.name = name;
+    public User(String password, String email, Set<Role> role) {
         this.password = password;
         this.email = email;
         this.role = role;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {

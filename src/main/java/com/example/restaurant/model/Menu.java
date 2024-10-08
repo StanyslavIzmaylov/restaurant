@@ -1,21 +1,12 @@
 package com.example.restaurant.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "menu")
-public class Menu {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @NotBlank
-    @Size(min = 2, max = 128)
-    @Column(name = "name", nullable = false)
-    private String name;
+public class Menu extends AbstractNamedEntity {
     @Column
     private Integer price;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,7 +14,11 @@ public class Menu {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
-    public Menu(){
+    public Menu() {
+    }
+
+    public Menu(Integer id, String name) {
+        super(id, name);
     }
 
     public Integer getPrice() {

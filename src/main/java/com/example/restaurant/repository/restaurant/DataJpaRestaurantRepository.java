@@ -30,7 +30,7 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public List<Restaurant> getAll() {
+    public List<Restaurant> getAllWithMenu() {
         return crudRestaurantRepository.getAllWithMenu();
     }
 }

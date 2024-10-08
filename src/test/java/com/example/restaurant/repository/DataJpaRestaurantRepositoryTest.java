@@ -22,7 +22,7 @@ public class DataJpaRestaurantRepositoryTest {
     }
     @Test
     public void getAll() {
-    List<Restaurant> menus = jpaRestaurantRepository.getAll();
+    List<Restaurant> menus = jpaRestaurantRepository.getAllWithMenu();
     menus.size();
     }
 }

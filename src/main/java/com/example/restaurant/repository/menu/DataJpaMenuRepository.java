@@ -2,6 +2,7 @@ package com.example.restaurant.repository.menu;
 
 import com.example.restaurant.model.Menu;
 import com.example.restaurant.repository.restaurant.CrudRestaurantRepository;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -17,12 +18,11 @@ public class DataJpaMenuRepository implements MenuRepository {
     }
 
     @Override
+    @Transactional
     public Menu save(Menu menu, int restaurId) {
-
-        // проверить menu.getId() int или Intenger
-//        if (menu.getId() == null && get(menu.getId(), restaurId) == null) {
-//            return null;
-//        }
+        if (!menu.isNew() && get(menu.getId(), restaurId) == null) {
+            return null;
+        }
         menu.setRestaurant(crudRestaurantRepository.getReferenceById(restaurId));
         return crudMenuRepository.save(menu);
     }

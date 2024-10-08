@@ -1,22 +1,17 @@
 package com.example.restaurant.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 import java.util.Set;
+
 @Entity
 @Table(name = "users")
-public class User{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @NotBlank
-    @Size(min = 2, max = 128)
-    @Column(name = "name", nullable = false)
-    private String name;
+public class User extends AbstractNamedEntity {
+    @Column(name = "password", nullable = false)
     private String password;
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_role")})
@@ -24,10 +19,11 @@ public class User{
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> role;
 
-    public User(){
+    public User() {
     }
 
-    public User(String password, String email, Set<Role> role) {
+    public User(Integer id, String name, String password, String email, Set<Role> role) {
+        super(id, name);
         this.password = password;
         this.email = email;
         this.role = role;

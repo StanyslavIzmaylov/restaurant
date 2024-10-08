@@ -1,6 +1,7 @@
-package com.example.restaurant.repository.menu;
+package com.example.restaurant.repository.user;
 
-import com.example.restaurant.model.Menu;
+import com.example.restaurant.model.User;
+import com.example.restaurant.model.Votes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,10 +9,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
+public interface CrudUserRepository extends JpaRepository<User, Integer> {
 
-    @Modifying
     @Transactional
-    @Query("DELETE FROM Menu m WHERE m.id=:id AND m.restaurant.id=:restaurId")
-    int delete(@Param("id") int id, @Param("restaurId") int restaurId);
+    @Modifying
+    @Query("DELETE FROM User u WHERE u.id=:id")
+    int delete(@Param("id") int id);
+
 }

@@ -1,5 +1,6 @@
 package com.example.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -12,6 +13,7 @@ public class Menu extends AbstractNamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Restaurant restaurant;
 
     public Menu() {

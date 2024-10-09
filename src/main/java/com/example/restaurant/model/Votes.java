@@ -2,17 +2,23 @@ package com.example.restaurant.model;
 
 import com.example.restaurant.util.ValidDateRange;
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.Constraint;
+import org.hibernate.annotations.Check;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 public class Votes {
     @Id
     @Column(name = "user_id")
     private int id;
-    @ValidDateRange
-    @Column(name = "created", columnDefinition = "timestamp default now()")
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created")
     private LocalDateTime localDateTime;
 
     @ManyToOne
@@ -23,11 +29,23 @@ public class Votes {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, insertable = false, updatable = false)
     private User user;
 
-    public Votes(Restaurant restaurant) {
-        this.localDateTime = LocalDateTime.now();
+    public Votes() {
     }
 
-    public Votes() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getLocalDateTime() {

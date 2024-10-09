@@ -24,11 +24,7 @@ public class DataJpaVotesRepositoryTest {
     DataJpaUserRepository dataJpaUserRepository;
 
     @Test
-    @Transactional
     public void save() {
-        Restaurant restaurant = dataJpaRestaurantRepository.get(100001);
-        User user = dataJpaUserRepository.get(100019);
-        Votes votes = new Votes();
-        dataJpaVotesRepository.save(votes);
+        dataJpaVotesRepository.save(100019,100000);
     }
 }

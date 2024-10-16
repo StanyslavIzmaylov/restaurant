@@ -5,6 +5,7 @@ import com.example.restaurant.model.User;
 import com.example.restaurant.model.Votes;
 import com.example.restaurant.repository.restaurant.CrudRestaurantRepository;
 import com.example.restaurant.repository.user.CrudUserRepository;
+import com.example.restaurant.util.ValidationUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -33,23 +34,17 @@ public class DataJpaVotesRepository implements VotesRepository {
 
     @Override
     @Transactional
-    public Votes save(int userId, int restaurId) {
-        Restaurant restaurant = crudRestaurantRepository.getReferenceById(restaurId);
+    public Votes save(Votes votes, int userId) {
+        ValidationUtil.timeRange(votes.getLocalTime());
+
+        Restaurant restaurant = crudRestaurantRepository.findById(votes.getRestaurant().getId()).orElse(null);
         User user = crudUserRepository.getReferenceById(userId);
+
         if (restaurant == null || user == null) {
             throw new NullPointerException();
         }
-        if (get(userId) != null){
-            delete(userId);
-            Votes votes = new Votes();
-            votes.setUser(user);
-            votes.setRestaurant(restaurant);
-            votes.setLocalDateTime(LocalDateTime.now());
-        }
-        Votes votes = new Votes();
-        votes.setUser(user);
+
         votes.setRestaurant(restaurant);
-        votes.setLocalDateTime(LocalDateTime.now());
         return crudVotesRepository.save(votes);
     }
 }

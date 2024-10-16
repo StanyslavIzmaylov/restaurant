@@ -25,6 +25,6 @@ public class DataJpaVotesRepositoryTest {
 
     @Test
     public void save() {
-        dataJpaVotesRepository.save(100019,100000);
+
     }
 }

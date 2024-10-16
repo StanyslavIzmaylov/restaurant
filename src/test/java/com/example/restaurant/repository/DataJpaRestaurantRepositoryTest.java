@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -22,7 +23,9 @@ public class DataJpaRestaurantRepositoryTest {
     }
     @Test
     public void getAll() {
-    List<Restaurant> menus = jpaRestaurantRepository.getAllWithMenu();
-    menus.size();
+        LocalDate localDate = LocalDate.of(2024,10,11);
+            List<Restaurant> restaurants = jpaRestaurantRepository.getAll();
+            restaurants.size();
+
     }
 }

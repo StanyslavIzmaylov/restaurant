@@ -1,59 +1,31 @@
 package com.example.restaurant.model;
 
-import com.example.restaurant.util.ValidDateRange;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.Constraint;
-import org.hibernate.annotations.Check;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-public class Votes {
-    @Id
-    @Column(name = "user_id")
-    private int id;
+@Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "votes_date"}, name = "votes_unique_user_date_idx")})
+public class Votes extends AbstractBaseEntity {
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created")
-    private LocalDateTime localDateTime;
+    @Column(name = "votes_date", nullable = false)
+    private LocalDate localDate;
 
-    @ManyToOne
+    @Column(name = "vote_time", nullable = false)
+    private LocalTime localTime;
+
+    @ManyToOne()
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, insertable = false, updatable = false)
+
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JsonIgnore
     private User user;
 
     public Votes() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
-    }
-
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
     }
 
     public Restaurant getRestaurant() {
@@ -64,4 +36,27 @@ public class Votes {
         this.restaurant = restaurant;
     }
 
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
+    }
+
+    public LocalTime getLocalTime() {
+        return localTime;
+    }
+
+    public void setLocalTime(LocalTime localTime) {
+        this.localTime = localTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

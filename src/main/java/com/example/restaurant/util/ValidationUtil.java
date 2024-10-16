@@ -1,8 +1,13 @@
 package com.example.restaurant.util;
 
+import java.time.LocalTime;
+
 public class ValidationUtil {
-    public static <T> T checkNotFoundWithId(T object, int id) {
-        checkNotFoundWithId(object != null, id);
-        return object;
+    private static final LocalTime timeStop = LocalTime.of(11, 00, 00);
+    private static final LocalTime timeStart = LocalTime.of(00, 00, 00);
+    public static void timeRange(LocalTime localTime){
+         if (!localTime.isBefore(timeStop) && localTime.isAfter(timeStart)){
+             throw new NullPointerException();
+        }
     }
 }

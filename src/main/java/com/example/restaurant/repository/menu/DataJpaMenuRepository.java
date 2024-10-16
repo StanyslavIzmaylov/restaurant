@@ -3,9 +3,11 @@ package com.example.restaurant.repository.menu;
 import com.example.restaurant.model.Menu;
 import com.example.restaurant.repository.restaurant.CrudRestaurantRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class DataJpaMenuRepository implements MenuRepository {
 
     private final CrudMenuRepository crudMenuRepository;
@@ -39,8 +41,14 @@ public class DataJpaMenuRepository implements MenuRepository {
                 .orElse(null);
     }
 
+    public void deleteAllEveryDay() {
+        crudMenuRepository.deleteAll();
+    }
+
     @Override
+    @Transactional
     public List<Menu> getAll() {
         return crudMenuRepository.findAll();
     }
+
 }

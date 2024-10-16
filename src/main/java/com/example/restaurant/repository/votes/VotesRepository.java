@@ -7,6 +7,6 @@ public interface VotesRepository {
 
     boolean delete(int userId);
 
-    Votes save(int userId, int restaurId);
+    Votes save(Votes votes, int userId);
 
 }

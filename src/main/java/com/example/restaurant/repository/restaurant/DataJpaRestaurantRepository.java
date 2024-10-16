@@ -30,4 +30,8 @@ public class DataJpaRestaurantRepository {
     public List<Restaurant> getAll() {
         return crudRestaurantRepository.findAll();
     }
+
+    public List<Restaurant> getAllWithDate(LocalDate localDate) {
+        return crudRestaurantRepository.getAllWithDate(localDate);
+    }
 }

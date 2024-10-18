@@ -1,11 +1,8 @@
 package com.example.restaurant.web;
 
-import com.example.restaurant.model.Menu;
-import com.example.restaurant.model.Restaurant;
 import com.example.restaurant.model.Votes;
 import com.example.restaurant.repository.menu.DataJpaMenuRepository;
-import com.example.restaurant.repository.restaurant.DataJpaRestaurantRepository;
-import com.example.restaurant.repository.votes.VotesRepository;
+import com.example.restaurant.repository.votes.DataJpaVotesRepository;
 import com.example.restaurant.to.MenuTo;
 import com.example.restaurant.to.VotesTo;
 import com.example.restaurant.util.MenuUtil;
@@ -19,15 +16,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = UserRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserRestController {
-    static final String REST_URL = "/rest/profile/restaurants";
+@RequestMapping(value = VotesRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class VotesRestController {
+    static final String REST_URL = "/rest/votes";
 
     @Autowired
-    private DataJpaRestaurantRepository dataJpaRestaurantRepository;
-
-    @Autowired
-    private VotesRepository votesRepository;
+    private DataJpaVotesRepository votesRepository;
 
     @Autowired
     private DataJpaMenuRepository dataJpaMenuRepository;
@@ -38,18 +32,16 @@ public class UserRestController {
         return VotesUtil.asTo(votes);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addVote(@RequestBody Votes votes) {
-        int userId = 100019;
-        votesRepository.save(votes, userId);
+    public void addVote(@PathVariable int id) {
+        int userId = 100026;
+        votesRepository.save(id, userId);
     }
 
     @GetMapping()
     public List<MenuTo> getAllWithDate() {
-        LocalDate localDate = LocalDate.of(2024,10,10);
-        return  MenuUtil.getTos(dataJpaMenuRepository.getAllWithDate(localDate));
+        LocalDate localDate = LocalDate.now();
+        return MenuUtil.getTos(dataJpaMenuRepository.getAllWithDate(localDate));
     }
-
-
 }

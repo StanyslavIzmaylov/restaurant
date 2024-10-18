@@ -1,25 +1,20 @@
 package com.example.restaurant.to;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class VotesTo implements Serializable {
 
     private Integer id;
 
-    private LocalDate date;
-
-    private LocalTime localTime;
+    private LocalDateTime localDateTime;
 
     private Integer restaurauntId;
 
-    public VotesTo(Integer id, LocalDate date, LocalTime localTime, Integer restaurauntId) {
+
+    public VotesTo(Integer id, LocalDateTime localDateTime, Integer restaurauntId) {
         this.id = id;
-        this.date = date;
-        this.localTime = localTime;
+        this.localDateTime = localDateTime;
         this.restaurauntId = restaurauntId;
     }
 
@@ -31,20 +26,12 @@ public class VotesTo implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public LocalTime getLocalTime() {
-        return localTime;
-    }
-
-    public void setLocalTime(LocalTime localTime) {
-        this.localTime = localTime;
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     public Integer getRestaurauntId() {

@@ -11,13 +11,16 @@ import java.util.List;
 @Entity
 @Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "restaurant_id"}, name = "menu_unique_date_idx")})
 public class Menu extends AbstractBaseEntity {
-    @Column
+
+    @Column(name = "date", columnDefinition = "date default now()", nullable = false)
     private LocalDate date;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Restaurant restaurant;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Meal> meals;

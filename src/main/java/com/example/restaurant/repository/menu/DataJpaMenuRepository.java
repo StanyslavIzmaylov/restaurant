@@ -29,7 +29,6 @@ public class DataJpaMenuRepository {
         return crudMenuRepository.save(menu);
     }
 
-
     public boolean delete(int id, int restaurId) {
         return crudMenuRepository.delete(id, restaurId) != 0;
     }
@@ -41,12 +40,6 @@ public class DataJpaMenuRepository {
                 .orElse(null);
     }
 
-    public void deleteAllEveryDay() {
-        crudMenuRepository.deleteAll();
-    }
-
-
-    @Transactional
     public List<Menu> getAll() {
         return crudMenuRepository.findAll();
     }

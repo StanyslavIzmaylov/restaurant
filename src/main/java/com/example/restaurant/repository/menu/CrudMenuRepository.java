@@ -1,8 +1,6 @@
 package com.example.restaurant.repository.menu;
 
 import com.example.restaurant.model.Menu;
-import com.example.restaurant.model.Restaurant;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +20,5 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
     @Transactional
     @Query("SELECT m FROM Menu m WHERE m.date=:date")
-    List<Menu> getAllWithDate(@Param("date")LocalDate localDate);
+    List<Menu> getAllWithDate(@Param("date") LocalDate localDate);
 }

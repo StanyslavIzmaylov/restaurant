@@ -13,4 +13,7 @@ public interface CrudVotesRepository extends JpaRepository<Votes, Integer> {
     @Modifying
     @Query("DELETE FROM Votes v WHERE v.id=:id")
     int delete(@Param("id") int id);
+
+    @Query("SELECT v FROM Votes v WHERE v.user.id=:userId")
+    Votes getVotesWithUserId(@Param("userId") int userId);
 }

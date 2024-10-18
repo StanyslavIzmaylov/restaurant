@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 
 @Repository
-public class DataJpaVotesRepository implements VotesRepository {
+public class DataJpaVotesRepository {
     private final CrudUserRepository crudUserRepository;
     private final CrudVotesRepository crudVotesRepository;
     private final CrudRestaurantRepository crudRestaurantRepository;
@@ -23,28 +23,30 @@ public class DataJpaVotesRepository implements VotesRepository {
         this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
-    public Votes get(int userId) {
-        return crudVotesRepository.findById(userId).orElse(null);
+    public Votes get(int id) {
+        return crudVotesRepository.findById(id).orElse(null);
     }
 
-    public boolean delete(int userId) {
-        return crudVotesRepository.delete(userId) !=0;
+    public Votes getVotesWithUserId(int userId) {
+        return crudVotesRepository.getVotesWithUserId(userId);
     }
 
+    public boolean delete(int id) {
+        return crudVotesRepository.delete(id) != 0;
+    }
 
-    @Override
     @Transactional
-    public Votes save(Votes votes, int userId) {
-        ValidationUtil.timeRange(votes.getLocalTime());
-
-        Restaurant restaurant = crudRestaurantRepository.findById(votes.getRestaurant().getId()).orElse(null);
+    public Votes save(int restaurId, int userId) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        ValidationUtil.timeRange(localDateTime);
+        Restaurant restaurant = crudRestaurantRepository.findById(restaurId).orElse(null);
         User user = crudUserRepository.getReferenceById(userId);
 
-        if (restaurant == null || user == null) {
-            throw new NullPointerException();
+        if (getVotesWithUserId(userId) != null) {
+            delete(getVotesWithUserId(userId).getId());
         }
 
-        votes.setRestaurant(restaurant);
+        Votes votes = new Votes(localDateTime, restaurant, user);
         return crudVotesRepository.save(votes);
     }
 }

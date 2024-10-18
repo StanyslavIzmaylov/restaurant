@@ -3,18 +3,14 @@ package com.example.restaurant.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "votes_date"}, name = "votes_unique_user_date_idx")})
+@Table(name = "votes")
 public class Votes extends AbstractBaseEntity {
 
-    @Column(name = "votes_date", nullable = false)
-    private LocalDate localDate;
-
-    @Column(name = "vote_time", nullable = false)
-    private LocalTime localTime;
+    @Column(name = "vote_date_time", nullable = false)
+    private LocalDateTime voteDateTime;
 
     @ManyToOne()
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -24,6 +20,19 @@ public class Votes extends AbstractBaseEntity {
     @ManyToOne
     @JsonIgnore
     private User user;
+
+    public Votes(LocalDateTime voteDateTime, Restaurant restaurant, User user) {
+        this.voteDateTime = voteDateTime;
+        this.restaurant = restaurant;
+        this.user = user;
+    }
+
+    public Votes(Integer id, LocalDateTime voteDateTime, Restaurant restaurant, User user) {
+        super(id);
+        this.voteDateTime = voteDateTime;
+        this.restaurant = restaurant;
+        this.user = user;
+    }
 
     public Votes() {
     }
@@ -36,21 +45,6 @@ public class Votes extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
-    }
-
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
-    }
-
-    public LocalTime getLocalTime() {
-        return localTime;
-    }
-
-    public void setLocalTime(LocalTime localTime) {
-        this.localTime = localTime;
-    }
 
     public User getUser() {
         return user;
@@ -58,5 +52,13 @@ public class Votes extends AbstractBaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getVoteDateTime() {
+        return voteDateTime;
+    }
+
+    public void setVoteDateTime(LocalDateTime voteDateTime) {
+        this.voteDateTime = voteDateTime;
     }
 }

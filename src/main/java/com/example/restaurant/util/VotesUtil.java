@@ -5,7 +5,7 @@ import com.example.restaurant.to.VotesTo;
 
 public class VotesUtil {
 
-    public static VotesTo asTo(Votes votes){
-        return new VotesTo(votes.getId(),votes.getLocalDate(),votes.getLocalTime(),votes.getRestaurant().getId());
+    public static VotesTo asTo(Votes votes) {
+        return new VotesTo(votes.getId(), votes.getVoteDateTime(), votes.getRestaurant().getId());
     }
 }

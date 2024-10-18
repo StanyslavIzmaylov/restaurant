@@ -2,8 +2,8 @@ package com.example.restaurant.repository.restaurant;
 
 import com.example.restaurant.model.Restaurant;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -15,6 +15,7 @@ public class DataJpaRestaurantRepository {
         this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
+    @Transactional
     public Restaurant save(Restaurant restaurant) {
         return crudRestaurantRepository.save(restaurant);
     }
@@ -29,9 +30,5 @@ public class DataJpaRestaurantRepository {
 
     public List<Restaurant> getAll() {
         return crudRestaurantRepository.findAll();
-    }
-
-    public List<Restaurant> getAllWithDate(LocalDate localDate) {
-        return crudRestaurantRepository.getAllWithDate(localDate);
     }
 }

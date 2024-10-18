@@ -22,6 +22,6 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     @Transactional
     @EntityGraph(attributePaths = {"menus"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT r FROM Restaurant r JOIN FETCH Menu m ON r.id = m.restaurant.id WHERE m.date=:date")
-    List<Restaurant> getAllWithDate(@Param("date")LocalDate localDate);
+    List<Restaurant> getAllWithDate(@Param("date") LocalDate localDate);
 
 }

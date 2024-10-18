@@ -1,5 +1,7 @@
 package com.example.restaurant.util;
 
+import com.example.restaurant.util.exeption.NotFoundException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,6 +13,26 @@ public class ValidationUtil {
     public static void timeRange(LocalDateTime localDateTime) {
         if (!localDateTime.isBefore(dateTimeStop) && localDateTime.isAfter(dateTimeStart)) {
             throw new NullPointerException();
+        }
+    }
+
+    public static <T> T checkNotFoundWithId(T object, int id) {
+        checkNotFoundWithId(object != null, id);
+        return object;
+    }
+
+    public static void checkNotFoundWithId(boolean found, int id) {
+        checkNotFound(found, "id=" + id);
+    }
+
+    public static <T> T checkNotFound(T object, String msg) {
+        checkNotFound(object != null, msg);
+        return object;
+    }
+
+    public static void checkNotFound(boolean found, String msg) {
+        if (!found) {
+            throw new NotFoundException("Not found entity with " + msg);
         }
     }
 }

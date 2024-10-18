@@ -28,6 +28,11 @@ public class Menu extends AbstractBaseEntity {
     public Menu() {
     }
 
+    public Menu(Integer id, LocalDate date) {
+        super(id);
+        this.date = date;
+    }
+
     public Menu(Integer id, LocalDate date, Restaurant restaurant) {
         super(id);
         this.date = date;

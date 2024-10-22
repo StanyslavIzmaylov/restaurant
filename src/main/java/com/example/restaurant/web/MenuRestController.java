@@ -2,6 +2,7 @@ package com.example.restaurant.web;
 
 import com.example.restaurant.model.Menu;
 import com.example.restaurant.repository.menu.DataJpaMenuRepository;
+import com.example.restaurant.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,28 +19,28 @@ public class MenuRestController {
     static final String REST_URL = "/rest/admin/restaurants";
 
     @Autowired
-    private DataJpaMenuRepository dataJpaMenuRepository;
+    private MenuService menuService;
 
     @GetMapping(path = "/{restaurId}/menu/{menuId}")
     public Menu get(@PathVariable int restaurId, @PathVariable int menuId) {
-        return dataJpaMenuRepository.get(menuId, restaurId);
+        return menuService.get(menuId, restaurId);
     }
 
     @DeleteMapping("/{restaurId}/menu/{menuId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restaurId, @PathVariable int menuId) {
-        dataJpaMenuRepository.delete(menuId, restaurId);
+        menuService.delete(menuId, restaurId);
     }
 
     @PutMapping(value = "/{restaurId}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody Menu menu, @PathVariable int restaurId) {
-        dataJpaMenuRepository.save(menu, restaurId);
+        menuService.save(menu, restaurId);
     }
 
     @PostMapping(value = "/{restaurId}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Menu> createWithLocation(@RequestBody Menu menu, @PathVariable int restaurId) {
-        Menu created = dataJpaMenuRepository.save(menu, restaurId);
+        Menu created = menuService.save(menu, restaurId);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -49,6 +50,6 @@ public class MenuRestController {
 
     @GetMapping(value = "/menus")
     public List<Menu> getAll() {
-        return dataJpaMenuRepository.getAll();
+        return menuService.getAll();
     }
 }

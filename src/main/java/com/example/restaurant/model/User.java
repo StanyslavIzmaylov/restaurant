@@ -1,7 +1,11 @@
 package com.example.restaurant.model;
 
 import jakarta.persistence.*;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,12 +26,21 @@ public class User extends AbstractNamedEntity {
     public User() {
     }
 
-    public User(Integer id, String name, String password, String email, Set<Role> role) {
+    public User(User u) {
+        this(u.id, u.name, u.password, u.email, u.role);
+    }
+
+    public User(Integer id, String name, String password, String email, Role... role) {
+        this(id, name, password, email, List.of(role));
+    }
+
+    public User(Integer id, String name, String password, String email, Collection<Role> role) {
         super(id, name);
         this.password = password;
         this.email = email;
-        this.role = role;
+        setRole(role);
     }
+
 
     public String getPassword() {
         return password;
@@ -49,7 +62,7 @@ public class User extends AbstractNamedEntity {
         return role;
     }
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    public void setRole(Collection<Role> role) {
+        this.role = CollectionUtils.isEmpty(role) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(role);
     }
 }

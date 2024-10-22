@@ -2,6 +2,8 @@ package com.example.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -14,11 +16,13 @@ public class Votes extends AbstractBaseEntity {
 
     @ManyToOne()
     @JoinColumn(name = "restaurant_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
     @JoinColumn(name = "user_id")
     @ManyToOne
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     public Votes(LocalDateTime voteDateTime, Restaurant restaurant, User user) {

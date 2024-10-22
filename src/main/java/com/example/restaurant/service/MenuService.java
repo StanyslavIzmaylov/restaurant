@@ -2,10 +2,15 @@ package com.example.restaurant.service;
 
 import com.example.restaurant.model.Menu;
 import com.example.restaurant.repository.menu.DataJpaMenuRepository;
+import com.example.restaurant.to.MenuTo;
+import com.example.restaurant.util.MenuUtil;
 import com.example.restaurant.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class MenuService {
@@ -30,9 +35,14 @@ public class MenuService {
         dataJpaMenuRepository.save(menu,restaurId);
     }
 
-    public void save(Menu menu, int restaurId){
+    public Menu save(Menu menu, int restaurId){
         Assert.notNull(menu, "menu must not be null");
-        dataJpaMenuRepository.save(menu,restaurId);
+       return dataJpaMenuRepository.save(menu,restaurId);
     }
-
+    public List<Menu> getAll(){
+        return  dataJpaMenuRepository.getAll();
+    }
+    public List<MenuTo> getAllWithDate(LocalDate localDate){
+      return  MenuUtil.getTos(dataJpaMenuRepository.getAllWithDate(localDate));
+    }
 }

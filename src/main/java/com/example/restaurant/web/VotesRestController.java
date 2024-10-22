@@ -1,11 +1,11 @@
 package com.example.restaurant.web;
 
 import com.example.restaurant.model.Votes;
-import com.example.restaurant.repository.menu.DataJpaMenuRepository;
 import com.example.restaurant.repository.votes.DataJpaVotesRepository;
+import com.example.restaurant.service.MenuService;
+import com.example.restaurant.service.VotesService;
 import com.example.restaurant.to.MenuTo;
 import com.example.restaurant.to.VotesTo;
-import com.example.restaurant.util.MenuUtil;
 import com.example.restaurant.util.VotesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,27 +21,26 @@ public class VotesRestController {
     static final String REST_URL = "/rest/votes";
 
     @Autowired
-    private DataJpaVotesRepository votesRepository;
+    private VotesService votesService;
 
     @Autowired
-    private DataJpaMenuRepository dataJpaMenuRepository;
+    private MenuService menuService;
 
     @GetMapping(path = "/{id}")
     public VotesTo get(@PathVariable int id) {
-        Votes votes = votesRepository.get(id);
-        return VotesUtil.asTo(votes);
+        return votesService.getTo(id);
     }
 
     @PostMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addVote(@PathVariable int id) {
         int userId = 100026;
-        votesRepository.save(id, userId);
+        votesService.save(id, userId);
     }
 
     @GetMapping()
     public List<MenuTo> getAllWithDate() {
         LocalDate localDate = LocalDate.now();
-        return MenuUtil.getTos(dataJpaMenuRepository.getAllWithDate(localDate));
+        return menuService.getAllWithDate(localDate);
     }
 }

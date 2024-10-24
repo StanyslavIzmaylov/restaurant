@@ -2,6 +2,7 @@ package com.example.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class Menu extends AbstractBaseEntity {
 
     @Column(name = "date", columnDefinition = "date default now()", nullable = false)
+    @NotNull
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)

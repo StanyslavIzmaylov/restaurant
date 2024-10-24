@@ -1,15 +1,14 @@
 package com.example.restaurant.web;
 
-import com.example.restaurant.model.Votes;
-import com.example.restaurant.repository.votes.DataJpaVotesRepository;
 import com.example.restaurant.service.MenuService;
 import com.example.restaurant.service.VotesService;
 import com.example.restaurant.to.MenuTo;
 import com.example.restaurant.to.VotesTo;
-import com.example.restaurant.util.VotesUtil;
+import com.example.restaurant.util.AuthorizedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -33,9 +32,8 @@ public class VotesRestController {
 
     @PostMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addVote(@PathVariable int id) {
-        int userId = 100026;
-        votesService.save(id, userId);
+    public void addVote(@PathVariable int id, @AuthenticationPrincipal AuthorizedUser authUser) {
+        votesService.save(id, authUser.getId());
     }
 
     @GetMapping()

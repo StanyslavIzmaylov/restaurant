@@ -28,6 +28,10 @@ public class DataJpaUserRepository {
         return crudUserRepository.findById(id).orElse(null);
     }
 
+    public User getByEmail(String email){
+       return crudUserRepository.getByEmail(email);
+    }
+
     public List<User> getAll() {
         return crudUserRepository.findAll();
     }

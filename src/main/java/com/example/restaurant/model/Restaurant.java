@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "restaurant")
 public class Restaurant extends AbstractNamedEntity {
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Menu> menus;

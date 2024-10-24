@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,12 +35,12 @@ public class MenuRestController {
 
     @PutMapping(value = "/{restaurId}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Menu menu, @PathVariable int restaurId) {
+    public void update(@RequestBody @Validated Menu menu, @PathVariable int restaurId) {
         menuService.save(menu, restaurId);
     }
 
     @PostMapping(value = "/{restaurId}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> createWithLocation(@RequestBody Menu menu, @PathVariable int restaurId) {
+    public ResponseEntity<Menu> createWithLocation(@RequestBody @Validated Menu menu, @PathVariable int restaurId) {
         Menu created = menuService.save(menu, restaurId);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

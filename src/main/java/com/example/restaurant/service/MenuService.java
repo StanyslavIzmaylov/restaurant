@@ -6,6 +6,7 @@ import com.example.restaurant.to.MenuTo;
 import com.example.restaurant.util.MenuUtil;
 import com.example.restaurant.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -42,6 +43,7 @@ public class MenuService {
     public List<Menu> getAll(){
         return  dataJpaMenuRepository.getAll();
     }
+    @Cacheable("menu")
     public List<MenuTo> getAllWithDate(LocalDate localDate){
       return  MenuUtil.getTos(dataJpaMenuRepository.getAllWithDate(localDate));
     }

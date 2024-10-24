@@ -1,5 +1,6 @@
 package com.example.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class AbstractBaseEntity {
     public AbstractBaseEntity(Integer id) {
         this.id = id;
     }
-
+    @JsonIgnore
     public boolean isNew() {
         return getId() == null;
     }

@@ -1,6 +1,7 @@
 package com.example.restaurant.util;
 
 import com.example.restaurant.util.exeption.NotFoundException;
+import com.example.restaurant.util.exeption.TimeRangeException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ public class ValidationUtil {
 
     public static void timeRange(LocalDateTime localDateTime) {
         if (!localDateTime.isBefore(dateTimeStop) && localDateTime.isAfter(dateTimeStart)) {
-            throw new NullPointerException();
+            throw new TimeRangeException("You can vote from 00:00 to 11:00");
         }
     }
 

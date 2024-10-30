@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class Votes extends AbstractBaseEntity {
 
     @Column(name = "vote_date_time", nullable = false)
+    @JsonIgnore
     private LocalDateTime voteDateTime;
 
     @ManyToOne()
@@ -25,15 +26,13 @@ public class Votes extends AbstractBaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    public Votes(LocalDateTime voteDateTime, Restaurant restaurant, User user) {
-        this.voteDateTime = voteDateTime;
+    public Votes(Restaurant restaurant, User user) {
         this.restaurant = restaurant;
         this.user = user;
     }
 
-    public Votes(Integer id, LocalDateTime voteDateTime, Restaurant restaurant, User user) {
+    public Votes(Integer id, Restaurant restaurant, User user) {
         super(id);
-        this.voteDateTime = voteDateTime;
         this.restaurant = restaurant;
         this.user = user;
     }

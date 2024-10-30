@@ -1,6 +1,7 @@
 package com.example.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -13,6 +14,7 @@ public class AbstractBaseEntity {
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100000)
     @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('global_seq')")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    @Hidden
     protected Integer id;
 
     public AbstractBaseEntity() {

@@ -4,9 +4,7 @@ import com.example.restaurant.model.Votes;
 import com.example.restaurant.repository.restaurant.DataJpaRestaurantRepository;
 import com.example.restaurant.repository.user.DataJpaUserRepository;
 import com.example.restaurant.repository.votes.DataJpaVotesRepository;
-import com.example.restaurant.to.VotesTo;
 import com.example.restaurant.util.ValidationUtil;
-import com.example.restaurant.util.VotesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,14 +44,9 @@ public class VotesService {
         votesRepository.save(restaurId, userId);
     }
 
-    public void save(int restaurId, int userId) {
+    public Votes save(int restaurId, int userId) {
         ValidationUtil.checkNotFoundWithId(restaurantRepository.get(restaurId), restaurId);
         ValidationUtil.checkNotFoundWithId(userRepository.get(userId), userId);
-        votesRepository.save(restaurId, userId);
-    }
-
-    public VotesTo getTo(int id) {
-        ValidationUtil.checkNotFoundWithId(votesRepository.get(id), id);
-        return VotesUtil.asTo(votesRepository.get(id));
+        return votesRepository.save(restaurId, userId);
     }
 }

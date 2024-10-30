@@ -2,6 +2,7 @@ package com.example.restaurant;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,7 +26,8 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> {
                     auth.requestMatchers("/rest/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/rest/votes/**").hasAnyRole("USER","ADMIN");
-//                    auth.requestMatchers("/rest/profile/**").hasRole("USER");
+                    auth.requestMatchers(HttpMethod.POST,"/rest/profile").permitAll();
+                    auth.requestMatchers("/rest/profile/**").hasAnyRole("USER","ADMIN");
                     auth.anyRequest().permitAll();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -35,7 +37,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-ui/**","/swagger-ui/**"));
+        return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-ui/**")).requestMatchers("/swagger-ui/**");
     }
 
     @Bean

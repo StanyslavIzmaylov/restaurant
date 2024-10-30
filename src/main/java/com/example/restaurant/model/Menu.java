@@ -1,6 +1,7 @@
 package com.example.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
@@ -23,8 +24,9 @@ public class Menu extends AbstractBaseEntity {
     @JsonIgnore
     private Restaurant restaurant;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "menu")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @Hidden
     private List<Meal> meals;
 
     public Menu() {

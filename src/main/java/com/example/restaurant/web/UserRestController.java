@@ -23,18 +23,18 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+
     @GetMapping
     public User get(@AuthenticationPrincipal AuthorizedUser authUser) {
         return userService.get(authUser.getId());
     }
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    @DeleteMapping(path = "/{userId}")
+
+    @DeleteMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthorizedUser authUser) {
         userService.delete(authUser.getId());
     }
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody @Validated User user, @AuthenticationPrincipal AuthorizedUser authUser) {
@@ -42,6 +42,7 @@ public class UserRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> register(@RequestBody @Validated User user) {
         User created = userService.save(user);
 

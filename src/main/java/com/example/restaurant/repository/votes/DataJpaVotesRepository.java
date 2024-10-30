@@ -45,8 +45,10 @@ public class DataJpaVotesRepository {
         if (getVotesWithUserId(userId) != null) {
             delete(getVotesWithUserId(userId).getId());
         }
-
-        Votes votes = new Votes(localDateTime, restaurant, user);
+        Votes votes = new Votes();
+        votes.setUser(user);
+        votes.setRestaurant(restaurant);
+        votes.setVoteDateTime(localDateTime);
         return crudVotesRepository.save(votes);
     }
 }

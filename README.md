@@ -21,6 +21,12 @@ As a result, provide a link to github repository. It should contain the code, RE
 
 swagger url - http://localhost:8080/swagger-ui/index.html
 
+Login:
+admin@ya.ru
+admin
+
+user@ya.ru
+user
 
 Техническое требование:
 
@@ -44,3 +50,10 @@ swagger url - http://localhost:8080/swagger-ui/index.html
 В результате предоставьте ссылку на репозиторий на github. Он должен содержать код, README.md с документацией по API и парой команд curl для его тестирования (лучше - ссылку на Swagger).
 
 swagger url - http://localhost:8080/swagger-ui/index.html
+
+Login:
+admin@ya.ru
+admin
+
+user@ya.ru
+user

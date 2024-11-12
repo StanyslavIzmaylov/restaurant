@@ -1,8 +1,8 @@
 package com.example.restaurant.web;
 
-import com.example.restaurant.model.Votes;
+import com.example.restaurant.model.Vote;
 import com.example.restaurant.service.MenuService;
-import com.example.restaurant.service.VotesService;
+import com.example.restaurant.service.VoteService;
 import com.example.restaurant.to.MenuTo;
 import com.example.restaurant.util.AuthorizedUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +18,25 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = VotesRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class VotesRestController {
-    static final String REST_URL = "/rest/votes";
+@RequestMapping(value = VoteRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class VoteRestController {
+    static final String REST_URL = "/rest/vote";
 
     @Autowired
-    private VotesService votesService;
+    private VoteService voteService;
 
     @Autowired
     private MenuService menuService;
 
     @GetMapping(path = "/{id}")
-    public Votes get(@PathVariable int id) {
-        return votesService.get(id);
+    public Vote get(@PathVariable int id) {
+        return voteService.get(id);
     }
 
     @PostMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Votes> save(@PathVariable int id, @AuthenticationPrincipal AuthorizedUser authUser) {
-        Votes created = votesService.save(id, authUser.getId());
+    public ResponseEntity<Vote> save(@PathVariable int id, @AuthenticationPrincipal AuthorizedUser authUser) {
+        Vote created = voteService.save(id, authUser.getId());
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL).build().toUri();

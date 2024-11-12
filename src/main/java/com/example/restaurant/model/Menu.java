@@ -14,9 +14,9 @@ import java.util.List;
 @Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "restaurant_id"}, name = "menu_unique_date_idx")})
 public class Menu extends AbstractBaseEntity {
 
-    @Column(name = "date", columnDefinition = "date default now()", nullable = false)
+    @Column(name = "menuDate", nullable = false)
     @NotNull
-    private LocalDate date;
+    private LocalDate menuDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -27,19 +27,19 @@ public class Menu extends AbstractBaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Hidden
-    private List<Meal> meals;
+    private List<MenuItem> menuItems;
 
     public Menu() {
     }
 
-    public Menu(Integer id, LocalDate date) {
+    public Menu(Integer id, LocalDate menuDate) {
         super(id);
-        this.date = date;
+        this.menuDate = menuDate;
     }
 
-    public Menu(Integer id, LocalDate date, Restaurant restaurant) {
+    public Menu(Integer id, LocalDate menuDate, Restaurant restaurant) {
         super(id);
-        this.date = date;
+        this.menuDate = menuDate;
         this.restaurant = restaurant;
     }
 
@@ -51,19 +51,19 @@ public class Menu extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getMenuDate() {
+        return menuDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setMenuDate(LocalDate date) {
+        this.menuDate = date;
     }
 
-    public List<Meal> getMeals() {
-        return meals;
+    public List<MenuItem> getMenuItem() {
+        return menuItems;
     }
 
-    public void setMeals(List<Meal> meals) {
-        this.meals = meals;
+    public void setMenuItem(List<MenuItem> menuItems) {
+        this.menuItems = menuItems;
     }
 }

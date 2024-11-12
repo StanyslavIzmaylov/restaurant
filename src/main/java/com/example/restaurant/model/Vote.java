@@ -8,8 +8,8 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "votes")
-public class Votes extends AbstractBaseEntity {
+@Table(name = "vote")
+public class Vote extends AbstractBaseEntity {
 
     @Column(name = "vote_date_time", nullable = false)
     @JsonIgnore
@@ -26,18 +26,18 @@ public class Votes extends AbstractBaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    public Votes(Restaurant restaurant, User user) {
+    public Vote(Restaurant restaurant, User user) {
         this.restaurant = restaurant;
         this.user = user;
     }
 
-    public Votes(Integer id, Restaurant restaurant, User user) {
+    public Vote(Integer id, Restaurant restaurant, User user) {
         super(id);
         this.restaurant = restaurant;
         this.user = user;
     }
 
-    public Votes() {
+    public Vote() {
     }
 
     public Restaurant getRestaurant() {

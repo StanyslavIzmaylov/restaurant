@@ -9,7 +9,7 @@ import java.util.List;
 public class MenuUtil {
 
     public static MenuTo asTo(Menu menu) {
-        return new MenuTo(menu.getRestaurant().getId(), menu.getRestaurant().getName(), menu.getId(), menu.getDate(), menu.getMeals());
+        return new MenuTo(menu.getRestaurant().getId(), menu.getRestaurant().getName(), menu.getId(), menu.getMenuDate(), menu.getMenuItem());
     }
 
     public static List<MenuTo> getTos(Collection<Menu> menus) {

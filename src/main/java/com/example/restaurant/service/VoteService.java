@@ -1,18 +1,18 @@
 package com.example.restaurant.service;
 
-import com.example.restaurant.model.Votes;
+import com.example.restaurant.model.Vote;
 import com.example.restaurant.repository.restaurant.DataJpaRestaurantRepository;
 import com.example.restaurant.repository.user.DataJpaUserRepository;
-import com.example.restaurant.repository.votes.DataJpaVotesRepository;
+import com.example.restaurant.repository.vote.DataJpaVoteRepository;
 import com.example.restaurant.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VotesService {
+public class VoteService {
 
     @Autowired
-    private final DataJpaVotesRepository votesRepository;
+    private final DataJpaVoteRepository voteRepository;
 
     @Autowired
     private final DataJpaRestaurantRepository restaurantRepository;
@@ -20,33 +20,33 @@ public class VotesService {
     @Autowired
     private final DataJpaUserRepository userRepository;
 
-    public VotesService(DataJpaVotesRepository votesRepository, DataJpaRestaurantRepository restaurantRepository, DataJpaUserRepository userRepository) {
-        this.votesRepository = votesRepository;
+    public VoteService(DataJpaVoteRepository voteRepository, DataJpaRestaurantRepository restaurantRepository, DataJpaUserRepository userRepository) {
+        this.voteRepository = voteRepository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
     }
 
-    public Votes get(int id) {
-        return ValidationUtil.checkNotFoundWithId(votesRepository.get(id), id);
+    public Vote get(int id) {
+        return ValidationUtil.checkNotFoundWithId(voteRepository.get(id), id);
     }
 
-    public Votes getVotesWithUserId(int userId) {
-        return ValidationUtil.checkNotFoundWithId(votesRepository.get(userId), userId);
+    public Vote getVoteWithUserId(int userId) {
+        return ValidationUtil.checkNotFoundWithId(voteRepository.get(userId), userId);
     }
 
     public void delete(int id) {
-        ValidationUtil.checkNotFoundWithId(votesRepository.delete(id), id);
+        ValidationUtil.checkNotFoundWithId(voteRepository.delete(id), id);
     }
 
     public void update(int restaurId, int userId) {
         ValidationUtil.checkNotFoundWithId(restaurantRepository.get(restaurId), restaurId);
         ValidationUtil.checkNotFoundWithId(userRepository.get(userId), userId);
-        votesRepository.save(restaurId, userId);
+        voteRepository.save(restaurId, userId);
     }
 
-    public Votes save(int restaurId, int userId) {
+    public Vote save(int restaurId, int userId) {
         ValidationUtil.checkNotFoundWithId(restaurantRepository.get(restaurId), restaurId);
         ValidationUtil.checkNotFoundWithId(userRepository.get(userId), userId);
-        return votesRepository.save(restaurId, userId);
+        return voteRepository.save(restaurId, userId);
     }
 }

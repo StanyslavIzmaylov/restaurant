@@ -8,7 +8,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Meal extends AbstractNamedEntity {
+public class MenuItem extends AbstractNamedEntity {
     @Column(name = "price", nullable = false)
     @NotNull
     private Integer price;
@@ -17,10 +17,10 @@ public class Meal extends AbstractNamedEntity {
     @JsonIgnore
     private Menu menu;
 
-    public Meal() {
+    public MenuItem() {
     }
 
-    public Meal(Integer id, String name, Integer price) {
+    public MenuItem(Integer id, String name, Integer price) {
         super(id, name);
         this.price = price;
     }

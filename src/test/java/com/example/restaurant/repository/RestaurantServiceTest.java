@@ -37,7 +37,7 @@ public class RestaurantServiceTest {
     @Test
     public void update() {
         Restaurant restaurant = RestaurantDataTest.getUpdate();
-        restaurantService.update(restaurant);
+        restaurantService.update(restaurant,restaurant.getId());
         RestaurantDataTest.RESTAURANT_MATCHER.assertMatch(restaurantService.get(RestaurantDataTest.RESTAUR_ID),restaurant);
     }
     @Test

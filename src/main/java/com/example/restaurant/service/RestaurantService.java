@@ -1,43 +1,45 @@
 package com.example.restaurant.service;
 
 import com.example.restaurant.model.Restaurant;
-import com.example.restaurant.repository.restaurant.DataJpaRestaurantRepository;
-import com.example.restaurant.util.ValidationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.restaurant.repository.CrudRestaurantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
 
+import static com.example.restaurant.util.ValidationUtil.assureIdConsistent;
+import static com.example.restaurant.util.ValidationUtil.checkNotFoundWithId;
+
 @Service
 public class RestaurantService {
 
-    @Autowired
-    private final DataJpaRestaurantRepository restaurantRepository;
+    private final CrudRestaurantRepository crudRestaurantRepository;
 
-    public RestaurantService(DataJpaRestaurantRepository restaurantRepository) {
-        this.restaurantRepository = restaurantRepository;
+    public RestaurantService(CrudRestaurantRepository crudRestaurantRepository) {
+        this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
+
     public void delete(int id) {
-        ValidationUtil.checkNotFoundWithId(restaurantRepository.delete(id), id);
+        checkNotFoundWithId(crudRestaurantRepository.delete(id), id);
     }
 
     public Restaurant get(int id) {
-        return ValidationUtil.checkNotFoundWithId(restaurantRepository.get(id), id);
+        return checkNotFoundWithId(crudRestaurantRepository.findById(id).orElse(null), id);
     }
 
-    public void update(Restaurant restaurant) {
+    public void update(Restaurant restaurant, int restaurId) {
         Assert.notNull(restaurant, "menu must not be null");
-        restaurantRepository.save(restaurant);
+        assureIdConsistent(restaurant,restaurId);
+        crudRestaurantRepository.save(restaurant);
     }
 
     public Restaurant save(Restaurant restaurant) {
         Assert.notNull(restaurant, "menu must not be null");
-        return restaurantRepository.save(restaurant);
+        return crudRestaurantRepository.save(restaurant);
     }
 
     public List<Restaurant> getAll() {
-        return restaurantRepository.getAll();
+        return crudRestaurantRepository.findAll();
     }
 }

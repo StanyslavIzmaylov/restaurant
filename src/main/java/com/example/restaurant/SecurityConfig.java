@@ -25,9 +25,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> {
                     auth.requestMatchers("/rest/admin/**").hasRole("ADMIN");
-                    auth.requestMatchers("/rest/vote/**").hasAnyRole("USER","ADMIN");
-                    auth.requestMatchers(HttpMethod.POST,"/rest/profile").permitAll();
-                    auth.requestMatchers("/rest/profile/**").hasAnyRole("USER","ADMIN");
+                    auth.requestMatchers("/rest/vote/**").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers(HttpMethod.POST, "/rest/profile").permitAll();
+                    auth.requestMatchers("/rest/profile/**").hasAnyRole("USER", "ADMIN");
                     auth.anyRequest().permitAll();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

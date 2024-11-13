@@ -1,9 +1,7 @@
 package com.example.restaurant.web;
 
 import com.example.restaurant.model.Restaurant;
-import com.example.restaurant.repository.restaurant.DataJpaRestaurantRepository;
 import com.example.restaurant.service.RestaurantService;
-import com.example.restaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,10 +32,10 @@ public class RestaurantRestController {
         restaurantService.delete(id);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody @Validated Restaurant restaurant) {
-        restaurantService.save(restaurant);
+    public void update(@RequestBody @Validated Restaurant restaurant, @PathVariable int id) {
+        restaurantService.update(restaurant,id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

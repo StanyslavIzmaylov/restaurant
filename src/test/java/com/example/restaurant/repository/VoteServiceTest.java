@@ -28,7 +28,7 @@ public class VoteServiceTest {
     @Test
     void delete() {
         voteService.delete(VoteDataTest.VOTE_ID);
-        assertThrows(NotFoundException.class, () -> voteService.get(RestaurantDataTest.RESTAUR_ID));
+        assertThrows(NotFoundException.class, () -> voteService.get(VoteDataTest.VOTE_ID));
     }
     @Test
     public void getNotFound() {

@@ -1,50 +1,66 @@
 package com.example.restaurant.service;
 
 import com.example.restaurant.model.Menu;
-import com.example.restaurant.repository.menu.DataJpaMenuRepository;
+import com.example.restaurant.repository.CrudMenuRepository;
+import com.example.restaurant.repository.CrudRestaurantRepository;
 import com.example.restaurant.to.MenuTo;
 import com.example.restaurant.util.MenuUtil;
-import com.example.restaurant.util.ValidationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.example.restaurant.util.ValidationUtil.assureIdConsistent;
+import static com.example.restaurant.util.ValidationUtil.checkNotFoundWithId;
+
 @Service
 public class MenuService {
 
-    @Autowired
-    private final DataJpaMenuRepository dataJpaMenuRepository;
+    private final CrudMenuRepository crudMenuRepository;
 
-    public MenuService(DataJpaMenuRepository dataJpaMenuRepository) {
-        this.dataJpaMenuRepository = dataJpaMenuRepository;
+    private final CrudRestaurantRepository crudRestaurantRepository;
+
+    public MenuService(CrudMenuRepository crudMenuRepository, CrudRestaurantRepository crudRestaurantRepository) {
+        this.crudMenuRepository = crudMenuRepository;
+        this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
-    public void delete(int id, int restaurId){
-        ValidationUtil.checkNotFoundWithId(dataJpaMenuRepository.delete(id,restaurId),id);
+
+    public void delete(int id, int restaurId) {
+        checkNotFoundWithId(crudMenuRepository.delete(id, restaurId), id);
     }
 
-    public Menu get(int id, int restaurId){
-       return ValidationUtil.checkNotFoundWithId(dataJpaMenuRepository.get(id,restaurId),id);
+    public Menu get(int id, int restaurId) {
+        return checkNotFoundWithId(crudMenuRepository.findById(id)
+                .filter(menu -> menu.getRestaurant().getId() == restaurId)
+                .orElse(null), id);
     }
-
-    public void update(Menu menu, int restaurId){
+    @Transactional
+    public void update(Menu menu, int restaurId, int id) {
         Assert.notNull(menu, "menu must not be null");
-        dataJpaMenuRepository.save(menu,restaurId);
+        assureIdConsistent(menu, id);
+        checkNotFoundWithId(get(id, restaurId), id);
+        menu.setRestaurant(crudRestaurantRepository.getReferenceById(restaurId));
+        crudMenuRepository.save(menu);
     }
 
-    public Menu save(Menu menu, int restaurId){
+    @Transactional
+    public Menu save(Menu menu, int restaurId) {
         Assert.notNull(menu, "menu must not be null");
-       return dataJpaMenuRepository.save(menu,restaurId);
+        if (!menu.isNew() && get(menu.getId(), restaurId) == null) {
+            return null;
+        }
+        menu.setRestaurant(crudRestaurantRepository.getReferenceById(restaurId));
+        return crudMenuRepository.save(menu);
     }
-    public List<Menu> getAll(){
-        return  dataJpaMenuRepository.getAll();
+
+    public List<Menu> getAll() {
+        return crudMenuRepository.findAll();
     }
-    @Cacheable("menu")
-    public List<MenuTo> getAllWithDate(LocalDate localDate){
-      return  MenuUtil.getTos(dataJpaMenuRepository.getAllWithDate(localDate));
+    
+    public List<MenuTo> getAllWithDate(LocalDate localDate) {
+        return MenuUtil.getTos(crudMenuRepository.getAllWithDate(localDate));
     }
 }

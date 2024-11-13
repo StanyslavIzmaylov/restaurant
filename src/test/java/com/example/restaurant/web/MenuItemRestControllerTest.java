@@ -25,8 +25,8 @@ public class MenuItemRestControllerTest extends AbstractControllerTest{
     @Autowired
     private MenuItemService menuItemService;
 
-    private static final String REST_URL = DishRestController.REST_URL + '/';
-    private static final String REST_URL_MEAL = "/meal/";
+    private static final String REST_URL = MenuItemRestController.REST_URL + '/';
+    private static final String REST_URL_MEAL = "/menu-item/";
 
     @Test
     void get() throws Exception {
@@ -51,7 +51,7 @@ public class MenuItemRestControllerTest extends AbstractControllerTest{
     @Test
     void save() throws Exception {
         MenuItem newMenuItem = MenuItemDataTest.getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post( REST_URL + MENU_ID + "/meal")
+        ResultActions action = perform(MockMvcRequestBuilders.post( REST_URL + MENU_ID + "/menu-item")
                 .with(userHttpBasic(admin))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newMenuItem)))
@@ -68,7 +68,7 @@ public class MenuItemRestControllerTest extends AbstractControllerTest{
     @Test
     void update() throws Exception {
         MenuItem menuItemUpdate = MenuItemDataTest.getUpdate();
-        perform(MockMvcRequestBuilders.put(REST_URL + MENU_ID + "/meal").contentType(MediaType.APPLICATION_JSON)
+        perform(MockMvcRequestBuilders.put(REST_URL + MENU_ID + "/menu-item/" + MENU_ITEM_ID).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(menuItemUpdate)))
                 .andDo(print())

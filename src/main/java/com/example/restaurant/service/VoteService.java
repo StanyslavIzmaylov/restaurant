@@ -1,37 +1,41 @@
 package com.example.restaurant.service;
 
+import com.example.restaurant.model.Restaurant;
+import com.example.restaurant.model.User;
 import com.example.restaurant.model.Vote;
-import com.example.restaurant.repository.restaurant.DataJpaRestaurantRepository;
-import com.example.restaurant.repository.user.DataJpaUserRepository;
-import com.example.restaurant.repository.vote.DataJpaVoteRepository;
+import com.example.restaurant.repository.CrudRestaurantRepository;
+import com.example.restaurant.repository.CrudUserRepository;
+import com.example.restaurant.repository.CrudVoteRepository;
 import com.example.restaurant.util.ValidationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+
+import static com.example.restaurant.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class VoteService {
 
-    @Autowired
-    private final DataJpaVoteRepository voteRepository;
+    private final CrudVoteRepository voteRepository;
 
-    @Autowired
-    private final DataJpaRestaurantRepository restaurantRepository;
+    private final CrudRestaurantRepository restaurantRepository;
 
-    @Autowired
-    private final DataJpaUserRepository userRepository;
+    private final CrudUserRepository userRepository;
 
-    public VoteService(DataJpaVoteRepository voteRepository, DataJpaRestaurantRepository restaurantRepository, DataJpaUserRepository userRepository) {
+    public VoteService(CrudVoteRepository voteRepository, CrudRestaurantRepository restaurantRepository, CrudUserRepository userRepository) {
         this.voteRepository = voteRepository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
     }
 
+
     public Vote get(int id) {
-        return ValidationUtil.checkNotFoundWithId(voteRepository.get(id), id);
+        return checkNotFoundWithId(voteRepository.findById(id).orElse(null),id);
     }
 
     public Vote getVoteWithUserId(int userId) {
-        return ValidationUtil.checkNotFoundWithId(voteRepository.get(userId), userId);
+        return ValidationUtil.checkNotFoundWithId(voteRepository.getByUserId(userId), userId);
     }
 
     public void delete(int id) {
@@ -39,14 +43,24 @@ public class VoteService {
     }
 
     public void update(int restaurId, int userId) {
-        ValidationUtil.checkNotFoundWithId(restaurantRepository.get(restaurId), restaurId);
-        ValidationUtil.checkNotFoundWithId(userRepository.get(userId), userId);
-        voteRepository.save(restaurId, userId);
+        ValidationUtil.checkNotFoundWithId(restaurantRepository.findById(restaurId), restaurId);
+        ValidationUtil.checkNotFoundWithId(userRepository.findById(userId).orElse(null), userId);
+         save(restaurId, userId);
     }
-
+    @Transactional
     public Vote save(int restaurId, int userId) {
-        ValidationUtil.checkNotFoundWithId(restaurantRepository.get(restaurId), restaurId);
-        ValidationUtil.checkNotFoundWithId(userRepository.get(userId), userId);
-        return voteRepository.save(restaurId, userId);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        ValidationUtil.timeRange(localDateTime);
+        Restaurant restaurant = restaurantRepository.findById(restaurId).orElse(null);
+        User user = userRepository.getReferenceById(userId);
+
+        if (getVoteWithUserId(userId) != null) {
+            delete(getVoteWithUserId(userId).getId());
+        }
+        Vote vote = new Vote();
+        vote.setUser(user);
+        vote.setRestaurant(restaurant);
+        vote.setVoteDateTime(localDateTime);
+        return voteRepository.save(vote);
     }
 }

@@ -14,10 +14,10 @@ public class UserUtil {
         return user;
     }
 
-    public static User roleCheck(User user){
+    public static User roleCheck(User user) {
         if (user.getRole() == null) {
             user.setRole(Collections.singleton(Role.USER));
         }
-        return  user;
+        return user;
     }
 }

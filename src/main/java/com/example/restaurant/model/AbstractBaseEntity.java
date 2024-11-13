@@ -1,5 +1,6 @@
 package com.example.restaurant.model;
 
+import com.example.restaurant.HasId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
@@ -8,7 +9,7 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public class AbstractBaseEntity {
+public class AbstractBaseEntity implements HasId {
 
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100000)
@@ -23,6 +24,7 @@ public class AbstractBaseEntity {
     public AbstractBaseEntity(Integer id) {
         this.id = id;
     }
+
     @JsonIgnore
     public boolean isNew() {
         return getId() == null;

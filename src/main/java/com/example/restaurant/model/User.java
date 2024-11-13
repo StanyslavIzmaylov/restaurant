@@ -28,6 +28,9 @@ public class User extends AbstractNamedEntity {
     @Size(max = 128)
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+    @Column(name = "voted", columnDefinition = "boolean default false")
+    private boolean voted;
+
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),

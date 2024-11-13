@@ -59,7 +59,7 @@ public class Menu extends AbstractBaseEntity {
         this.menuDate = date;
     }
 
-    public List<MenuItem> getMenuItem() {
+    public List<MenuItem> getMenuItems() {
         return menuItems;
     }
 

@@ -1,4 +1,4 @@
-package com.example.restaurant.repository.menuItem;
+package com.example.restaurant.repository;
 
 import com.example.restaurant.model.MenuItem;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,6 @@
-package com.example.restaurant.repository.vote;
+package com.example.restaurant.repository;
 
-import com.example.restaurant.model.Vote;
+import com.example.restaurant.model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,12 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
+public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Integer> {
+
     @Transactional
     @Modifying
-    @Query("DELETE FROM Vote v WHERE v.id=:id")
+    @Query("DELETE FROM Restaurant r WHERE r.id=:id")
     int delete(@Param("id") int id);
-
-    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId")
-    Vote getVoteWithUserId(@Param("userId") int userId);
 }

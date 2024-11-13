@@ -14,32 +14,32 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = DishRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class DishRestController {
+@RequestMapping(value = MenuItemRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class MenuItemRestController {
 
     static final String REST_URL = "/rest/admin/menu";
 
     @Autowired
     private MenuItemService menuItemService;
 
-    @GetMapping(path = "/{menuId}/meal/{mealId}")
-    public MenuItem get(@PathVariable int menuId, @PathVariable int mealId) {
-        return menuItemService.get(mealId, menuId);
+    @GetMapping(path = "/{menuId}/menu-item/{menuItemId}")
+    public MenuItem get(@PathVariable int menuId, @PathVariable int menuItemId) {
+        return menuItemService.get(menuItemId, menuId);
     }
 
-    @DeleteMapping("/{menuId}/meal/{mealId}")
+    @DeleteMapping("/{menuId}/menu-item/{menuItemId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int menuId, @PathVariable int mealId) {
-        menuItemService.delete(mealId, menuId);
+    public void delete(@PathVariable int menuId, @PathVariable int menuItemId) {
+        menuItemService.delete(menuItemId, menuId);
     }
 
-    @PutMapping(value = "/{menuId}/meal", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{menuId}/menu-item/{menuItemId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody @Validated MenuItem menuItem, @PathVariable int menuId) {
+    public void update(@RequestBody @Validated MenuItem menuItem, @PathVariable int menuId,@PathVariable int menuItemId) {
         menuItemService.save(menuItem, menuId);
     }
 
-    @PostMapping(value = "/{menuId}/meal", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{menuId}/menu-item", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuItem> createWithLocation(@RequestBody @Validated MenuItem menuItem, @PathVariable int menuId) {
         MenuItem created = menuItemService.save(menuItem, menuId);
 

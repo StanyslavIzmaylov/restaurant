@@ -1,5 +1,7 @@
 package com.example.restaurant.util;
 
+import com.example.restaurant.HasId;
+import com.example.restaurant.util.exeption.IllegalRequestDataException;
 import com.example.restaurant.util.exeption.NotFoundException;
 import com.example.restaurant.util.exeption.TimeRangeException;
 
@@ -34,6 +36,15 @@ public class ValidationUtil {
     public static void checkNotFound(boolean found, String msg) {
         if (!found) {
             throw new NotFoundException("Not found entity with " + msg);
+        }
+    }
+
+    public static void assureIdConsistent(HasId bean, int id) {
+//      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
+        if (bean.isNew()) {
+            bean.setId(id);
+        } else if (bean.id() != id) {
+            throw new IllegalRequestDataException(bean + " must be with id=" + id);
         }
     }
 }

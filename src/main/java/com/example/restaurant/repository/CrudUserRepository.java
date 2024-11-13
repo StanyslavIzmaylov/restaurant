@@ -1,21 +1,20 @@
-package com.example.restaurant.repository.restaurant;
+package com.example.restaurant.repository;
 
-import com.example.restaurant.model.Restaurant;
-import org.springframework.data.jpa.repository.EntityGraph;
+import com.example.restaurant.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Transactional(readOnly = true)
-public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Integer> {
+public interface CrudUserRepository extends JpaRepository<User, Integer> {
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM Restaurant r WHERE r.id=:id")
+    @Query("DELETE FROM User u WHERE u.id=:id")
     int delete(@Param("id") int id);
+
+    @Query("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.role WHERE u.email=?1")
+    User getByEmail(String email);
 }

@@ -1,7 +1,6 @@
 package com.example.restaurant.web;
 
 import com.example.restaurant.model.Menu;
-import com.example.restaurant.repository.menu.DataJpaMenuRepository;
 import com.example.restaurant.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,10 +32,10 @@ public class MenuRestController {
         menuService.delete(menuId, restaurId);
     }
 
-    @PutMapping(value = "/{restaurId}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{restaurId}/menu/{menuId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody @Validated Menu menu, @PathVariable int restaurId) {
-        menuService.save(menu, restaurId);
+    public void update(@RequestBody @Validated Menu menu, @PathVariable int restaurId, @PathVariable int menuId) {
+        menuService.update(menu, restaurId, menuId);
     }
 
     @PostMapping(value = "/{restaurId}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)

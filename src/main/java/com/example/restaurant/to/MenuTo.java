@@ -15,14 +15,14 @@ public class MenuTo implements Serializable {
 
     private LocalDate localDate;
 
-    private List<MenuItem> menuItemList;
+    private List<MenuItem> menuItems;
 
-    public MenuTo(Integer restaurantId, String restaurantName, Integer menuId, LocalDate localDate, List<MenuItem> menuItemList) {
+    public MenuTo(Integer restaurantId, String restaurantName, Integer menuId, LocalDate localDate, List<MenuItem> menuItems) {
         this.restaurantId = restaurantId;
         this.restaurantName = restaurantName;
         this.menuId = menuId;
         this.localDate = localDate;
-        this.menuItemList = menuItemList;
+        this.menuItems = menuItems;
     }
 
     public Integer getRestaurantId() {
@@ -58,10 +58,10 @@ public class MenuTo implements Serializable {
     }
 
     public List<MenuItem> getMenuItem() {
-        return menuItemList;
+        return menuItems;
     }
 
-    public void setMenuItem(List<MenuItem> menuItemList) {
-        this.menuItemList = menuItemList;
+    public void setMenuItem(List<MenuItem> menuItems) {
+        this.menuItems = menuItems;
     }
 }

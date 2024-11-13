@@ -4,6 +4,7 @@ import com.example.restaurant.data.MenuDataTest;
 import com.example.restaurant.data.RestaurantDataTest;
 import com.example.restaurant.model.Menu;
 import com.example.restaurant.model.Restaurant;
+import com.example.restaurant.repository.MenuServiceTest;
 import com.example.restaurant.service.MenuService;
 import com.example.restaurant.util.exeption.NotFoundException;
 import com.example.restaurant.util.json.JsonUtil;
@@ -68,7 +69,7 @@ public class MenuRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Menu menuUpdate = MenuDataTest.getUpdate();
-        perform(MockMvcRequestBuilders.put(REST_URL + RESTAUR_ID + "/menu").contentType(MediaType.APPLICATION_JSON)
+        perform(MockMvcRequestBuilders.put(REST_URL + RESTAUR_ID + "/menu/"+ MENU_ID).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(JsonUtil.writeValue(menuUpdate)))
                 .andDo(print())

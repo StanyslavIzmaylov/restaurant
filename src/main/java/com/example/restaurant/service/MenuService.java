@@ -5,6 +5,7 @@ import com.example.restaurant.repository.CrudMenuRepository;
 import com.example.restaurant.repository.CrudRestaurantRepository;
 import com.example.restaurant.to.MenuTo;
 import com.example.restaurant.util.MenuUtil;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -32,11 +33,20 @@ public class MenuService {
         checkNotFoundWithId(crudMenuRepository.delete(id, restaurId), id);
     }
 
+    @Transactional
     public Menu get(int id, int restaurId) {
-        return checkNotFoundWithId(crudMenuRepository.findById(id)
+      Menu menu1 =  crudMenuRepository.findById(id)
                 .filter(menu -> menu.getRestaurant().getId() == restaurId)
-                .orElse(null), id);
+                .orElse(null);
+        checkNotFoundWithId(menu1, id);
+        Hibernate.initialize(menu1.getMenuItems());
+        return menu1;
     }
+
+    public Menu getWithDate(int restaurId, LocalDate localDate) {
+        return crudMenuRepository.getWithDate(localDate, restaurId);
+    }
+
     @Transactional
     public void update(Menu menu, int restaurId, int id) {
         Assert.notNull(menu, "menu must not be null");
@@ -56,10 +66,6 @@ public class MenuService {
         return crudMenuRepository.save(menu);
     }
 
-    public List<Menu> getAll() {
-        return crudMenuRepository.findAll();
-    }
-    
     public List<MenuTo> getAllWithDate(LocalDate localDate) {
         return MenuUtil.getTos(crudMenuRepository.getAllWithDate(localDate));
     }

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import static com.example.restaurant.util.UserUtil.prepareToSave;
@@ -34,8 +35,9 @@ public class UserService implements UserDetailsService {
         checkNotFoundWithId(userRepository.delete(id), id);
     }
 
+    @Transactional
     public User get(int id) {
-        return checkNotFoundWithId(userRepository.findById(id).orElse(null), id);
+        return checkNotFoundWithId(userRepository.findById(id).orElse(null),id);
     }
 
     public User getByEmail(String email) {

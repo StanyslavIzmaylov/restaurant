@@ -28,15 +28,13 @@ public class User extends AbstractNamedEntity {
     @Size(max = 128)
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-    @Column(name = "voted", columnDefinition = "boolean default false")
-    private boolean voted;
 
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_role")})
     @Column(name = "role")
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @BatchSize(size = 200)
     private Set<Role> role;
 

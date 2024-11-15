@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = MenuItemRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,13 +43,8 @@ public class MenuItemRestController {
         MenuItem created = menuItemService.save(menuItem, menuId);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
+                .path(REST_URL + "/{menuId}/menu-item/{id}")
+                .buildAndExpand(created.getMenu().getId(),created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
-    }
-
-    @GetMapping(value = "/meals")
-    public List<MenuItem> getAll() {
-        return menuItemService.getAll();
     }
 }

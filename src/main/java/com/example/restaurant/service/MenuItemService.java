@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 import static com.example.restaurant.util.ValidationUtil.assureIdConsistent;
 import static com.example.restaurant.util.ValidationUtil.checkNotFoundWithId;
 
@@ -31,7 +29,7 @@ public class MenuItemService {
         return ValidationUtil.checkNotFoundWithId( menuItemRepository.findById(id)
                 .filter(meal -> meal.getMenu().getId() == menuId).orElse(null), id);
     }
-
+    @Transactional
     public void update(MenuItem menuItem,int menuItemId, int menuId) {
         Assert.notNull(menuItem, "meal must not be null");
         assureIdConsistent(menuItem, menuItemId);
@@ -48,9 +46,5 @@ public class MenuItemService {
         }
         menuItem.setMenu(crudMenuRepository.getReferenceById(menuId));
         return menuItemRepository.save(menuItem);
-    }
-
-    public List<MenuItem> getAll() {
-        return menuItemRepository.findAll();
     }
 }

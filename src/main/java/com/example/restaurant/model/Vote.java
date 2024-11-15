@@ -5,22 +5,21 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "vote")
 public class Vote extends AbstractBaseEntity {
 
-    @Column(name = "vote_date_time", nullable = false)
-    @JsonIgnore
-    private LocalDateTime voteDateTime;
+    @Column(name = "vote_date", nullable = false)
+    private LocalDate voteDate;
 
     @ManyToOne()
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -33,6 +32,14 @@ public class Vote extends AbstractBaseEntity {
 
     public Vote(Integer id, Restaurant restaurant, User user) {
         super(id);
+        this.restaurant = restaurant;
+        this.user = user;
+    }
+
+
+    public Vote(Integer id, LocalDate voteDate, Restaurant restaurant, User user) {
+        super(id);
+        this.voteDate = voteDate;
         this.restaurant = restaurant;
         this.user = user;
     }
@@ -57,11 +64,12 @@ public class Vote extends AbstractBaseEntity {
         this.user = user;
     }
 
-    public LocalDateTime getVoteDateTime() {
-        return voteDateTime;
+    public LocalDate getVoteDate() {
+        return voteDate;
     }
 
-    public void setVoteDateTime(LocalDateTime voteDateTime) {
-        this.voteDateTime = voteDateTime;
+    public void setVoteDate(LocalDate voteDate) {
+        this.voteDate = voteDate;
     }
+
 }

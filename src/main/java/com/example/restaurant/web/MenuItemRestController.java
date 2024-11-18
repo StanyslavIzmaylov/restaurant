@@ -34,7 +34,7 @@ public class MenuItemRestController {
 
     @PutMapping(value = "/{menuId}/menu-item/{menuItemId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody @Validated MenuItem menuItem, @PathVariable int menuId,@PathVariable int menuItemId) {
+    public void update(@RequestBody @Validated MenuItem menuItem, @PathVariable int menuId, @PathVariable int menuItemId) {
         menuItemService.save(menuItem, menuId);
     }
 
@@ -44,7 +44,7 @@ public class MenuItemRestController {
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{menuId}/menu-item/{id}")
-                .buildAndExpand(created.getMenu().getId(),created.getId()).toUri();
+                .buildAndExpand(created.getMenu().getId(), created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 }

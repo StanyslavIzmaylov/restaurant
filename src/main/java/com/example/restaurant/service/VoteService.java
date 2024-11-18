@@ -31,26 +31,26 @@ public class VoteService {
     }
 
     public Vote get(int id, int userId) {
-        return  checkNotFoundWithId(voteRepository.findById(id)
+        return checkNotFoundWithId(voteRepository.findById(id)
                 .filter(vote -> vote.getUser().getId() == userId)
-                .orElse(null),id);
+                .orElse(null), id);
     }
 
     public Vote getWithDateToDay(int id, int userId) {
-        return voteRepository.getWithDateToDay(id, LocalDate.now() ,userId);
+        return voteRepository.getWithDateToDay(id, LocalDate.now(), userId);
     }
 
     public void delete(int id) {
         checkNotFoundWithId(voteRepository.delete(id), id);
     }
 
-    public void update(Vote vote,int voteId, int userId) {
+    public void update(Vote vote, int voteId, int userId) {
         Assert.notNull(vote, "vote must not be null");
-        assureIdConsistent(vote,voteId);
-        userCheck(vote,userId);
+        assureIdConsistent(vote, voteId);
+        userCheck(vote, userId);
         vote.setUser(userRepository.getReferenceById(userId));
 
-        if (getWithDateToDay(voteId, userId) != null){
+        if (getWithDateToDay(voteId, userId) != null) {
             timeRange(DateTimeUtil.getTimeNow());
             voteRepository.save(vote);
         }
@@ -61,7 +61,7 @@ public class VoteService {
     @Transactional
     public Vote save(Vote vote, int userId) {
         Assert.notNull(vote, "vote must not be null");
-        userCheck(vote,userId);
+        userCheck(vote, userId);
 
         Restaurant restaurant = restaurantRepository.findById(vote.getRestaurant().getId()).orElse(null);
         Assert.notNull(restaurant, "restaurant must not be null");
@@ -70,7 +70,7 @@ public class VoteService {
         return voteRepository.save(vote);
     }
 
-    public void userCheck(Vote vote, int userId){
+    public void userCheck(Vote vote, int userId) {
         if (!vote.isNew() && get(vote.id(), userId) == null) {
             throw new NotFoundException("Entety not found");
         }

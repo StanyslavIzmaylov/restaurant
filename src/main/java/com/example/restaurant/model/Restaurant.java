@@ -1,12 +1,11 @@
 package com.example.restaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurant")
@@ -17,8 +16,7 @@ public class Restaurant extends AbstractBaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Hidden
-    @JsonIgnore
-    private List<Menu> menus;
+    private Set<Menu> menus;
 
     public Restaurant() {
     }
@@ -28,11 +26,11 @@ public class Restaurant extends AbstractBaseEntity {
         this.name = name;
     }
 
-    public List<Menu> getMenus() {
+    public Set<Menu> getMenus() {
         return menus;
     }
 
-    public void setMenus(List<Menu> menus) {
+    public void setMenus(Set<Menu> menus) {
         this.menus = menus;
     }
 

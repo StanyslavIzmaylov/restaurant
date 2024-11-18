@@ -1,4 +1,4 @@
-package com.example.restaurant.repository;
+package com.example.restaurant.service;
 
 import com.example.restaurant.data.VoteDataTest;
 import com.example.restaurant.model.Vote;

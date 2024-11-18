@@ -3,15 +3,10 @@ package com.example.restaurant.service;
 import com.example.restaurant.model.Menu;
 import com.example.restaurant.repository.CrudMenuRepository;
 import com.example.restaurant.repository.CrudRestaurantRepository;
-import com.example.restaurant.to.MenuTo;
-import com.example.restaurant.util.MenuUtil;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import static com.example.restaurant.util.ValidationUtil.assureIdConsistent;
 import static com.example.restaurant.util.ValidationUtil.checkNotFoundWithId;
@@ -35,16 +30,12 @@ public class MenuService {
 
     @Transactional
     public Menu get(int id, int restaurId) {
-      Menu menu1 =  crudMenuRepository.findById(id)
+        Menu menu1 = crudMenuRepository.findById(id)
                 .filter(menu -> menu.getRestaurant().getId() == restaurId)
                 .orElse(null);
         checkNotFoundWithId(menu1, id);
         Hibernate.initialize(menu1.getMenuItems());
         return menu1;
-    }
-
-    public Menu getWithDate(int restaurId, LocalDate localDate) {
-        return crudMenuRepository.getWithDate(localDate, restaurId);
     }
 
     @Transactional
@@ -64,9 +55,5 @@ public class MenuService {
         }
         menu.setRestaurant(crudRestaurantRepository.getReferenceById(restaurId));
         return crudMenuRepository.save(menu);
-    }
-
-    public List<MenuTo> getAllWithDate(LocalDate localDate) {
-        return MenuUtil.getTos(crudMenuRepository.getAllWithDate(localDate));
     }
 }

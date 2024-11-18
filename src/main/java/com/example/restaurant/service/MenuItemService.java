@@ -16,6 +16,7 @@ public class MenuItemService {
 
     private final CrudMenuItemRepository menuItemRepository;
     private final CrudMenuRepository crudMenuRepository;
+
     public MenuItemService(CrudMenuItemRepository MenuItemRepository, CrudMenuRepository crudMenuRepository) {
         this.menuItemRepository = MenuItemRepository;
         this.crudMenuRepository = crudMenuRepository;
@@ -26,11 +27,12 @@ public class MenuItemService {
     }
 
     public MenuItem get(int id, int menuId) {
-        return ValidationUtil.checkNotFoundWithId( menuItemRepository.findById(id)
+        return ValidationUtil.checkNotFoundWithId(menuItemRepository.findById(id)
                 .filter(meal -> meal.getMenu().getId() == menuId).orElse(null), id);
     }
+
     @Transactional
-    public void update(MenuItem menuItem,int menuItemId, int menuId) {
+    public void update(MenuItem menuItem, int menuItemId, int menuId) {
         Assert.notNull(menuItem, "meal must not be null");
         assureIdConsistent(menuItem, menuItemId);
         checkNotFoundWithId(get(menuItemId, menuId), menuItemId);

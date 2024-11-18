@@ -1,10 +1,7 @@
 package com.example.restaurant.web;
 
 import com.example.restaurant.data.MenuDataTest;
-import com.example.restaurant.data.RestaurantDataTest;
 import com.example.restaurant.model.Menu;
-import com.example.restaurant.model.Restaurant;
-import com.example.restaurant.repository.MenuServiceTest;
 import com.example.restaurant.service.MenuService;
 import com.example.restaurant.util.exeption.NotFoundException;
 import com.example.restaurant.util.json.JsonUtil;

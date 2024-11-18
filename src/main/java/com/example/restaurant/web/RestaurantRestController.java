@@ -11,34 +11,45 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = RestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantRestController {
     static final String REST_URL = "/rest/admin/restaurant";
 
     @Autowired
     private RestaurantService restaurantService;
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = REST_URL + "/{id}")
     public Restaurant get(@PathVariable int id) {
         return restaurantService.get(id);
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping(path = REST_URL + "/{id}/with-all-menu")
+    public Restaurant getWithAllMenu(@PathVariable int id) {
+        return restaurantService.getWithAllMenu(id);
+    }
+
+    @GetMapping(path = REST_URL + "/{id}/with-date")
+    public Restaurant getWithDate(@PathVariable int id, @RequestParam LocalDate localDate) {
+        return restaurantService.getWithDate(id, localDate);
+    }
+
+    @DeleteMapping(REST_URL + "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         restaurantService.delete(id);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = REST_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody @Validated Restaurant restaurant, @PathVariable int id) {
-        restaurantService.update(restaurant,id);
+        restaurantService.update(restaurant, id);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@RequestBody @Validated Restaurant restaurant) {
         Restaurant created = restaurantService.save(restaurant);
 
@@ -49,7 +60,18 @@ public class RestaurantRestController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @GetMapping()
+    @GetMapping(path = REST_URL + "/all-with-menu-to-day")
+    public List<Restaurant> getWithMenuToDay() {
+        LocalDate localDate = LocalDate.now();
+        return restaurantService.getWithMenuAndWithDate(localDate);
+    }
+
+    @GetMapping(path = REST_URL + "/all-with-date")
+    public List<Restaurant> getWithMenuAndWithDate(@RequestParam LocalDate localDate) {
+        return restaurantService.getWithMenuAndWithDate(localDate);
+    }
+
+    @GetMapping(path = REST_URL)
     public List<Restaurant> getAll() {
         return restaurantService.getAll();
     }

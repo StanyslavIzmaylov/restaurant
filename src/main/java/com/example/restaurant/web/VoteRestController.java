@@ -25,19 +25,19 @@ public class VoteRestController {
 
     @GetMapping(path = "/{id}")
     public Vote get(@PathVariable int id, @AuthenticationPrincipal AuthorizedUser authUser) {
-        return voteService.get(id,authUser.getId());
+        return voteService.get(id, authUser.getId());
     }
 
     @GetMapping(path = "/{id}/date-to-day")
     public Vote getWithDateToDay(@PathVariable int id, @AuthenticationPrincipal AuthorizedUser authUser) {
-        return voteService.getWithDateToDay(id,authUser.getId());
+        return voteService.getWithDateToDay(id, authUser.getId());
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody @Validated Vote vote, @PathVariable int id, @AuthenticationPrincipal AuthorizedUser authUser) {
         vote.setVoteDate(LocalDate.now());
-        voteService.update(vote,id,authUser.getId());
+        voteService.update(vote, id, authUser.getId());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

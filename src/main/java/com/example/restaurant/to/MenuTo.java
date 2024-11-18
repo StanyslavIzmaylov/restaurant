@@ -4,7 +4,7 @@ import com.example.restaurant.model.MenuItem;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 public class MenuTo implements Serializable {
     private Integer restaurantId;
@@ -15,9 +15,9 @@ public class MenuTo implements Serializable {
 
     private LocalDate localDate;
 
-    private List<MenuItem> menuItems;
+    private Set<MenuItem> menuItems;
 
-    public MenuTo(Integer restaurantId, String restaurantName, Integer menuId, LocalDate localDate, List<MenuItem> menuItems) {
+    public MenuTo(Integer restaurantId, String restaurantName, Integer menuId, LocalDate localDate, Set<MenuItem> menuItems) {
         this.restaurantId = restaurantId;
         this.restaurantName = restaurantName;
         this.menuId = menuId;
@@ -57,11 +57,11 @@ public class MenuTo implements Serializable {
         this.localDate = localDate;
     }
 
-    public List<MenuItem> getMenuItem() {
+    public Set<MenuItem> getMenuItem() {
         return menuItems;
     }
 
-    public void setMenuItem(List<MenuItem> menuItems) {
+    public void setMenuItem(Set<MenuItem> menuItems) {
         this.menuItems = menuItems;
     }
 }

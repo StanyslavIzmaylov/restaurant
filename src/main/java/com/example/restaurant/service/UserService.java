@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 import static com.example.restaurant.util.UserUtil.prepareToSave;
 import static com.example.restaurant.util.ValidationUtil.checkNotFoundWithId;
 
@@ -37,7 +39,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public User get(int id) {
-        return checkNotFoundWithId(userRepository.findById(id).orElse(null),id);
+        return checkNotFoundWithId(userRepository.findById(id).orElse(null), id);
     }
 
     public User getByEmail(String email) {
@@ -69,5 +71,9 @@ public class UserService implements UserDetailsService {
 
     private User prepareAndSave(User user) {
         return userRepository.save(prepareToSave(user, passwordEncoder));
+    }
+
+    public List<User> getAll() {
+        return userRepository.findAll();
     }
 }

@@ -1,8 +1,7 @@
-package com.example.restaurant.repository;
+package com.example.restaurant.service;
 
 import com.example.restaurant.data.MenuItemDataTest;
 import com.example.restaurant.model.MenuItem;
-import com.example.restaurant.service.MenuItemService;
 import com.example.restaurant.util.exeption.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

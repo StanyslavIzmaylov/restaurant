@@ -26,16 +26,6 @@ public class RestaurantRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL = RestaurantRestController.REST_URL + '/';
 
     @Test
-    void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAUR_ID)
-                .with(userHttpBasic(admin)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(restaurant));
-    }
-
-    @Test
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL + RESTAUR_ID)
                 .with(userHttpBasic(admin)))

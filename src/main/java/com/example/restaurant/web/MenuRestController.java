@@ -2,6 +2,8 @@ package com.example.restaurant.web;
 
 import com.example.restaurant.model.Menu;
 import com.example.restaurant.service.MenuService;
+import com.example.restaurant.to.MenuTo;
+import com.example.restaurant.util.MenuUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,12 +35,14 @@ public class MenuRestController {
 
     @PutMapping(value = REST_URL + "/{restaurId}/menu/{menuId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody @Validated Menu menu, @PathVariable int restaurId, @PathVariable int menuId) {
+    public void update(@RequestBody @Validated MenuTo menuTo, @PathVariable int restaurId, @PathVariable int menuId) {
+        Menu menu = MenuUtil.getTo(menuTo);
         menuService.update(menu, restaurId, menuId);
     }
 
     @PostMapping(value = REST_URL + "/{restaurId}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> save(@RequestBody @Validated Menu menu, @PathVariable int restaurId) {
+    public ResponseEntity<Menu> save(@RequestBody @Validated MenuTo menuTo, @PathVariable int restaurId) {
+        Menu menu = MenuUtil.getTo(menuTo);
         Menu created = menuService.save(menu, restaurId);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

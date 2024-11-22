@@ -6,14 +6,16 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
-@Table(name = "vote")
+@Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"vote_date", "user_id"}, name = "vote_unique_date_idx")})
 public class Vote extends AbstractBaseEntity {
 
     @Column(name = "vote_date", nullable = false)
     private LocalDate voteDate;
-
+    @Column(name = "vote_time", nullable = false)
+    private LocalTime localTime;
     @ManyToOne()
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -25,26 +27,21 @@ public class Vote extends AbstractBaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    public Vote(Restaurant restaurant, User user) {
+    public Vote(Restaurant restaurant) {
         this.restaurant = restaurant;
-        this.user = user;
     }
 
-    public Vote(Integer id, Restaurant restaurant, User user) {
+    public Vote(Integer id, Restaurant restaurant) {
         super(id);
         this.restaurant = restaurant;
-        this.user = user;
-    }
-
-
-    public Vote(Integer id, LocalDate voteDate, Restaurant restaurant, User user) {
-        super(id);
-        this.voteDate = voteDate;
-        this.restaurant = restaurant;
-        this.user = user;
     }
 
     public Vote() {
+    }
+
+    public Vote(Integer id, LocalDate voteDate) {
+        super(id);
+        this.voteDate = voteDate;
     }
 
     public Restaurant getRestaurant() {
@@ -72,4 +69,11 @@ public class Vote extends AbstractBaseEntity {
         this.voteDate = voteDate;
     }
 
+    public LocalTime getLocalTime() {
+        return localTime;
+    }
+
+    public void setLocalTime(LocalTime localTime) {
+        this.localTime = localTime;
+    }
 }

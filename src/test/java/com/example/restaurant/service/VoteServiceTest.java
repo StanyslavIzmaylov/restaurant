@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalTime;
 
+import static com.example.restaurant.data.RestaurantDataTest.RESTAUR_ID;
 import static com.example.restaurant.data.UserDataTest.USER_ID;
 import static com.example.restaurant.data.VoteDataTest.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,35 +42,31 @@ public class VoteServiceTest {
         assertThrows(NotFoundException.class, () -> voteService.get(VOTE_NOT_FOUND, USER_ID));
     }
 
-    @Test
-    public void update() {
-        Vote vote = getUpdate();
-        voteService.update(vote, VOTE_ID, USER_ID);
-        VoteDataTest.VOTE_MATCHER.assertMatch(voteService.get(VOTE_ID, USER_ID), vote);
-    }
 
     @Test
     public void updateBeforeEleven() {
-        Vote vote = getUpdateWithToDayDate();
+        Vote vote = getUpdate();
         DateTimeUtil.setTimeNow(LocalTime.of(10, 00));
-        voteService.update(vote, VOTE_ID + 1, USER_ID + 1);
-        VOTE_MATCHER.assertMatch(voteService.get(VOTE_ID + 1, USER_ID + 1), vote);
+        voteService.update(vote, VOTE_ID, USER_ID, RESTAUR_ID);
+        VOTE_MATCHER.assertMatch(voteService.get(VOTE_ID, USER_ID), vote);
+        DateTimeUtil.setTimeNow(LocalTime.now());
     }
 
     @Test
     public void updateAfterEleven() {
-        Vote vote = getUpdateWithToDayDate();
+        Vote vote = getUpdate();
         DateTimeUtil.setTimeNow(LocalTime.of(12, 00));
-        assertThrows(TimeRangeException.class, () -> voteService.update(vote, VOTE_ID + 1, USER_ID + 1));
+        assertThrows(TimeRangeException.class, () -> voteService.update(vote, VOTE_ID, USER_ID,RESTAUR_ID));
+        DateTimeUtil.setTimeNow(LocalTime.now());
     }
 
     @Test
     public void save() {
-        Vote created = voteService.save(getNew(), USER_ID);
+        Vote created = voteService.save(getNew(), USER_ID + 2, RESTAUR_ID);
         int newId = created.getId();
         Vote newVote = getNew();
         newVote.setId(newId);
         VoteDataTest.VOTE_MATCHER.assertMatch(created, newVote);
-        VoteDataTest.VOTE_MATCHER.assertMatch(voteService.get(newId, USER_ID), newVote);
+        VoteDataTest.VOTE_MATCHER.assertMatch(voteService.get(newId, USER_ID+2), newVote);
     }
 }

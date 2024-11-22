@@ -3,19 +3,8 @@ package com.example.restaurant.util;
 import com.example.restaurant.HasId;
 import com.example.restaurant.util.exeption.IllegalRequestDataException;
 import com.example.restaurant.util.exeption.NotFoundException;
-import com.example.restaurant.util.exeption.TimeRangeException;
-
-import java.time.LocalTime;
 
 public class ValidationUtil {
-    private static final LocalTime timeStop = LocalTime.of(11, 00, 00);
-    private static final LocalTime timeStart = LocalTime.of(00, 00, 00);
-
-    public static void timeRange(LocalTime localTime) {
-        if (!localTime.isBefore(timeStop) && localTime.isAfter(timeStart)) {
-            throw new TimeRangeException("You can vote from 00:00 to 11:00");
-        }
-    }
 
     public static <T> T checkNotFoundWithId(T object, int id) {
         checkNotFoundWithId(object != null, id);

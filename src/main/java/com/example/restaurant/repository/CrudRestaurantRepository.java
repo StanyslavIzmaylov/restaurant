@@ -22,9 +22,9 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menus m LEFT JOIN FETCH m.menuItems WHERE m.menuDate=:date")
     List<Restaurant> getWithMenuAndWithDate(@Param("date") LocalDate localDate);
 
-    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menus m WHERE r.id=:id AND m.menuDate=:date")
+    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menus m LEFT JOIN FETCH m.menuItems WHERE r.id=:id AND m.menuDate=:date")
     Restaurant getWithDate(@Param("id") int id, @Param("date") LocalDate localDate);
 
     @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menus m LEFT JOIN FETCH m.menuItems WHERE r.id=:id")
-    Restaurant getWithAllMenu(@Param("id") int id);
+    List<Restaurant> getWithAllMenu(@Param("id") int id);
 }

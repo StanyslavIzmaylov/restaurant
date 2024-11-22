@@ -32,4 +32,6 @@ public class AppConfig {
         objectMapper.addMixIn(ProblemDetail.class, MixIn.class);
         JsonUtil.setMapper(objectMapper);
     }
+
+
 }

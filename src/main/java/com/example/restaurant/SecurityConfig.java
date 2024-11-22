@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> {
                     auth.requestMatchers("/rest/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/rest/vote/**").hasAnyRole("USER", "ADMIN");
-                    auth.requestMatchers("/rest/menu/**").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers("/rest/restaurant/**").hasAnyRole("USER", "ADMIN");
                     auth.requestMatchers(HttpMethod.POST, "/rest/profile").permitAll();
                     auth.requestMatchers("/rest/profile/**").hasAnyRole("USER", "ADMIN");
                     auth.anyRequest().permitAll();

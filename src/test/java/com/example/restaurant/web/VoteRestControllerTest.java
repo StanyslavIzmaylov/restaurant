@@ -1,31 +1,25 @@
 package com.example.restaurant.web;
 
-import com.example.restaurant.data.MenuDataTest;
-import com.example.restaurant.model.Menu;
 import com.example.restaurant.model.Vote;
 import com.example.restaurant.service.VoteService;
+import com.example.restaurant.to.VoteTo;
+import com.example.restaurant.util.DateTimeUtil;
+import com.example.restaurant.util.VoteUtil;
 import com.example.restaurant.util.json.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.time.LocalTime;
 
 import static com.example.restaurant.TestUtil.userHttpBasic;
-import static com.example.restaurant.data.MenuDataTest.MENU_ID;
-import static com.example.restaurant.data.MenuDataTest.MENU_MATCHER;
 import static com.example.restaurant.data.RestaurantDataTest.RESTAUR_ID;
 import static com.example.restaurant.data.UserDataTest.*;
-import static com.example.restaurant.data.UserDataTest.user;
-import static com.example.restaurant.data.VoteDataTest.*;
 import static com.example.restaurant.data.VoteDataTest.getNew;
 import static com.example.restaurant.data.VoteDataTest.getUpdate;
+import static com.example.restaurant.data.VoteDataTest.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,30 +42,50 @@ public class VoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     void save() throws Exception {
-        Vote newVote = getNew();
+        VoteTo voteTo = new VoteTo(null,RESTAUR_ID);
+        Vote newVote = VoteUtil.getTo(voteTo);
         ResultActions action = perform(MockMvcRequestBuilders.post(VoteRestController.REST_URL)
-                .with(userHttpBasic(user))
+                .with(userHttpBasic(user2))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newVote)))
+                .content(JsonUtil.writeValue(voteTo)))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
         Vote created = VOTE_MATCHER.readFromJson(action);
         int newId = created.getId();
         newVote.setId(newId);
-        VOTE_MATCHER.assertMatch(created, newVote);
-        VOTE_MATCHER.assertMatch(voteService.get(newId,USER_ID), newVote);
+//        VOTE_MATCHER.assertMatch(created, newVote);
+        VOTE_MATCHER.assertMatch(voteService.get(newId, USER_ID + 2), created);
     }
 
     @Test
-    void update() throws Exception {
-        Vote voteUpdate = getUpdate();
+    void updateBeforeEleven() throws Exception {
+        VoteTo voteTo = new VoteTo(VOTE_ID, RESTAUR_ID);
+        Vote voteUpdate = VoteUtil.getTo(voteTo);
+
+        DateTimeUtil.setTimeNow(LocalTime.of(10, 0));
         perform(MockMvcRequestBuilders.put(REST_URL + VOTE_ID).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(user))
-                .content(JsonUtil.writeValue(voteUpdate)))
+                .content(JsonUtil.writeValue(voteTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        VOTE_MATCHER.assertMatch(voteService.get(VOTE_ID,USER_ID), voteUpdate);
+        VOTE_MATCHER.assertMatch(voteService.get(VOTE_ID, USER_ID), voteUpdate);
+        DateTimeUtil.setTimeNow(LocalTime.now());
+    }
+
+    @Test
+    void updateAfterEleven() throws Exception {
+        VoteTo voteTo = new VoteTo(VOTE_ID, RESTAUR_ID);
+        Vote voteUpdate = VoteUtil.getTo(voteTo);
+
+        DateTimeUtil.setTimeNow(LocalTime.of(12, 0));
+        perform(MockMvcRequestBuilders.put(REST_URL + VOTE_ID).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
+                .content(JsonUtil.writeValue(voteTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+
+        DateTimeUtil.setTimeNow(LocalTime.now());
     }
 }

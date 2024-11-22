@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Transactional(readOnly = true)
 public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
@@ -17,6 +18,14 @@ public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
     int delete(@Param("id") int id);
 
     @Transactional
-    @Query("SELECT v FROM Vote v WHERE v.id=:id AND v.voteDate=:voteDate AND v.user.id =:userId")
-    Vote getWithDateToDay(@Param("id") int id, @Param("voteDate") LocalDate voteDate, @Param("userId") int userId);
+    @Query("SELECT v FROM Vote v WHERE v.user.id =:userId")
+    List<Vote> getVoteByUser(@Param("userId") int userId);
+
+    @Transactional
+    @Query("SELECT v FROM Vote v WHERE v.user.id =:userId AND v.voteDate=:voteDate")
+    Vote getVoteByUserAndDateToDay(@Param("userId") int userId, @Param("voteDate") LocalDate voteDate);
+
+    @Transactional
+    @Query("SELECT v FROM Vote v WHERE v.voteDate=:voteDate")
+    List<Vote> geWithDate(@Param("voteDate") LocalDate voteDate);
 }

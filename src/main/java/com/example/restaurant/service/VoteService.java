@@ -6,14 +6,16 @@ import com.example.restaurant.repository.CrudRestaurantRepository;
 import com.example.restaurant.repository.CrudUserRepository;
 import com.example.restaurant.repository.CrudVoteRepository;
 import com.example.restaurant.util.DateTimeUtil;
-import com.example.restaurant.util.exeption.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import static com.example.restaurant.util.ValidationUtil.*;
+import static com.example.restaurant.util.DateTimeUtil.timeRange;
+import static com.example.restaurant.util.ValidationUtil.assureIdConsistent;
+import static com.example.restaurant.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class VoteService {
@@ -36,43 +38,51 @@ public class VoteService {
                 .orElse(null), id);
     }
 
-    public Vote getWithDateToDay(int id, int userId) {
-        return voteRepository.getWithDateToDay(id, LocalDate.now(), userId);
+    public Vote getWithDateToDay(int userId) {
+        return voteRepository.getVoteByUserAndDateToDay(userId, LocalDate.now());
+    }
+
+    private Vote getVoteByUserAndDateToDay(int userId) {
+        return voteRepository.getVoteByUserAndDateToDay(userId, LocalDate.now());
     }
 
     public void delete(int id) {
         checkNotFoundWithId(voteRepository.delete(id), id);
     }
 
-    public void update(Vote vote, int voteId, int userId) {
+    public void update(Vote vote, int voteId, int userId, int restaurantId) {
         Assert.notNull(vote, "vote must not be null");
         assureIdConsistent(vote, voteId);
-        userCheck(vote, userId);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
+        Assert.notNull(restaurant, "restaurant must not be null");
         vote.setUser(userRepository.getReferenceById(userId));
+        vote.setRestaurant(restaurant);
 
-        if (getWithDateToDay(voteId, userId) != null) {
+        if (getVoteByUserAndDateToDay(userId) != null) {
             timeRange(DateTimeUtil.getTimeNow());
             voteRepository.save(vote);
         }
-
-        voteRepository.save(vote);
     }
 
     @Transactional
-    public Vote save(Vote vote, int userId) {
+    public Vote save(Vote vote, int userId, int restaurantId) {
         Assert.notNull(vote, "vote must not be null");
-        userCheck(vote, userId);
+        if (!vote.isNew() && get(vote.id(), userId) != null) {
+            return null;
+        }
 
-        Restaurant restaurant = restaurantRepository.findById(vote.getRestaurant().getId()).orElse(null);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
         Assert.notNull(restaurant, "restaurant must not be null");
         vote.setUser(userRepository.getReferenceById(userId));
         vote.setRestaurant(restaurant);
         return voteRepository.save(vote);
     }
 
-    public void userCheck(Vote vote, int userId) {
-        if (!vote.isNew() && get(vote.id(), userId) == null) {
-            throw new NotFoundException("Entety not found");
-        }
+    public List<Vote> getAllWithUser(int userId) {
+        return voteRepository.getVoteByUser(userId);
+    }
+
+    public List<Vote> geWithDate(LocalDate localDate) {
+        return voteRepository.geWithDate(localDate);
     }
 }

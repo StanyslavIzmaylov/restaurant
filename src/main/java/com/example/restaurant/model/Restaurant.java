@@ -1,6 +1,5 @@
 package com.example.restaurant.model;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -15,7 +14,6 @@ public class Restaurant extends AbstractBaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @Hidden
     private Set<Menu> menus;
 
     public Restaurant() {

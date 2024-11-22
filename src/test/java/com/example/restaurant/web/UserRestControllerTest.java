@@ -44,8 +44,8 @@ public class UserRestControllerTest extends AbstractControllerTest{
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL)
-                .with(userHttpBasic(user)))
+        perform(MockMvcRequestBuilders.delete("/rest/admin/users/" + USER_ID)
+                .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 

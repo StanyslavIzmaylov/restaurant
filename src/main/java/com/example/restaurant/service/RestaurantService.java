@@ -29,7 +29,7 @@ public class RestaurantService {
         return checkNotFoundWithId(crudRestaurantRepository.findById(id).orElse(null), id);
     }
 
-    public Restaurant getWithAllMenu(int id) {
+    public List<Restaurant> getWithAllMenu(int id) {
         return crudRestaurantRepository.getWithAllMenu(id);
     }
 
@@ -45,14 +45,13 @@ public class RestaurantService {
 
     public Restaurant save(Restaurant restaurant) {
         Assert.notNull(restaurant, "menu must not be null");
+        if (!restaurant.isNew() && get(restaurant.id()) != null) {
+            return null;
+        }
         return crudRestaurantRepository.save(restaurant);
     }
 
     public List<Restaurant> getWithMenuAndWithDate(LocalDate localDate) {
         return crudRestaurantRepository.getWithMenuAndWithDate(localDate);
-    }
-
-    public List<Restaurant> getAll() {
-        return crudRestaurantRepository.findAll();
     }
 }

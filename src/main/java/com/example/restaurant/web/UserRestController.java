@@ -29,10 +29,10 @@ public class UserRestController {
         return userService.get(authUser.getId());
     }
 
-    @DeleteMapping(path = REST_URL)
+    @DeleteMapping(path = "/rest/admin/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@AuthenticationPrincipal AuthorizedUser authUser) {
-        userService.delete(authUser.getId());
+    public void delete(@PathVariable int id) {
+        userService.delete(id);
     }
 
     @PutMapping(path = REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -53,7 +53,7 @@ public class UserRestController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @GetMapping(path = "/rest/admin/all-user")
+    @GetMapping(path = "/rest/admin/users/all-user")
     public List<User> getAll(@AuthenticationPrincipal AuthorizedUser authUser) {
         return userService.getAll();
     }

@@ -50,7 +50,7 @@ public class MenuService {
     @Transactional
     public Menu save(Menu menu, int restaurId) {
         Assert.notNull(menu, "menu must not be null");
-        if (!menu.isNew() && get(menu.getId(), restaurId) == null) {
+        if (!menu.isNew() && get(menu.getId(), restaurId) != null) {
             return null;
         }
         menu.setRestaurant(crudRestaurantRepository.getReferenceById(restaurId));

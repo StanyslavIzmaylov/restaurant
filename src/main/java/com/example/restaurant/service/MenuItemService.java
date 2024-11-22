@@ -43,7 +43,7 @@ public class MenuItemService {
     @Transactional
     public MenuItem save(MenuItem menuItem, int menuId) {
         Assert.notNull(menuItem, "menu must not be null");
-        if (!menuItem.isNew() && get(menuItem.getId(), menuId) == null) {
+        if (!menuItem.isNew() && get(menuItem.getId(), menuId) != null) {
             return null;
         }
         menuItem.setMenu(crudMenuRepository.getReferenceById(menuId));

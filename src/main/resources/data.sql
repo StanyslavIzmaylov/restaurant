@@ -55,4 +55,4 @@ INSERT INTO user_role (role, user_id) VALUES ('USER', 100028);
 
 INSERT INTO vote (restaurant_id,VOTE_DATE,VOTE_TIME, user_id) VALUES (100000,NOW(),'10:00', 100024);
 INSERT INTO vote (restaurant_id,VOTE_DATE,VOTE_TIME, user_id) VALUES (100000,NOW(),'11:00', 100025);
-INSERT INTO vote (restaurant_id,VOTE_DATE,VOTE_TIME, user_id) VALUES (100001,NOW() - 1,'12:00', 100024);
+INSERT INTO vote (restaurant_id,VOTE_DATE,VOTE_TIME, user_id) VALUES (100001,NOW() - 1,'12:00', 100023);
